@@ -1,0 +1,30 @@
+/* Hero Selector & Card Frames */
+.hero-selector { margin-top: 16px; }
+.selector-title { color:#ffd579; font-weight:800; text-align:center; margin-bottom: 10px; }
+.selector-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; }
+.hero-card { background:#141414; border:1px solid #3a3a3a; border-radius:14px; padding:12px; cursor:pointer; transition: box-shadow .2s; }
+.hero-card.hover { box-shadow: 0 0 28px rgba(255,120,79,0.15), inset 0 0 24px rgba(255,213,121,0.08); border-color:#555; }
+.hero-top { display:flex; align-items:center; gap:10px; margin-bottom: 8px; }
+.hero-icon { font-size: 1.6rem; }
+.hero-name { font-weight:800; color:#eee; }
+.hero-bars { display:flex; flex-direction:column; gap:6px; margin: 8px 0; }
+.stat-row { display:flex; align-items:center; gap:8px; }
+.stat-label { width: 40px; font-size: .8rem; color:#aaa }
+.stat-bar { flex:1; height: 8px; background:#0e0e0e; border:1px solid #333; border-radius: 10px; overflow:hidden }
+.stat-fill { height:100%; border-radius: 10px; box-shadow: 0 0 6px rgba(255,255,255,0.1) inset }
+.hero-desc { font-size: .85rem; color:#bbb; }
+
+/* Card visuals */
+.game-card { position:relative; overflow:hidden; }
+.game-card::before { content:""; position:absolute; inset:0; border:1px solid rgba(255,255,255,0.06); border-radius:8px; pointer-events:none }
+.game-card.common { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2)); }
+.game-card.uncommon { background: linear-gradient(180deg, rgba(121,255,168,0.06), rgba(0,0,0,0.2)); box-shadow: 0 0 10px rgba(121,255,168,0.08) inset }
+.game-card.rare { background: linear-gradient(180deg, rgba(103,167,255,0.06), rgba(0,0,0,0.2)); box-shadow: 0 0 12px rgba(103,167,255,0.10) inset }
+.game-card.epic { background: linear-gradient(180deg, rgba(199,103,255,0.08), rgba(0,0,0,0.2)); box-shadow: 0 0 14px rgba(199,103,255,0.12) inset }
+.game-card.legendary { background: linear-gradient(180deg, rgba(255,213,121,0.10), rgba(0,0,0,0.2)); box-shadow: 0 0 18px rgba(255,213,121,0.16) inset }
+.game-card .particle { position:absolute; width:6px; height:6px; border-radius:50%; background: rgba(255,255,255,0.45); filter: blur(1px); animation: float 2s ease-in-out infinite; }
+@keyframes float { 0%{ transform: translateY(0)} 50%{ transform: translateY(-8px)} 100%{ transform: translateY(0)} }
+
+/* Parallax landing */
+.hero { position:relative }
+.hero::after { content:""; position:absolute; inset:0; background: radial-gradient(900px 150px at 10% 10%, rgba(255,120,79,0.08), transparent), radial-gradient(600px 120px at 90% 80%, rgba(255,213,121,0.10), transparent); pointer-events:none }
