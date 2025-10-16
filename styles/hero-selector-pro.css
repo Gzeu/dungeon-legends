@@ -1,0 +1,8 @@
+/* Advanced Hero Selector 2.0 */
+.hero-selector.pro .selector-grid { gap: 16px }
+.hero-card.pro { position:relative; background: radial-gradient(600px 100px at -10% -20%, rgba(255,120,79,0.08), transparent), #141414; border:1px solid #3a3a3a; border-radius:14px; padding:14px; cursor:pointer; transform-style: preserve-3d; }
+.hero-card.pro .spotlight { content:""; position:absolute; inset:-1px; border-radius:14px; background: radial-gradient(300px 80px at 30% 0%, rgba(255,213,121,0.12), transparent); pointer-events:none; mix-blend-mode: screen }
+.role-badge { margin-left:auto; font-size:.75rem; padding:2px 8px; border-radius:999px; border:1px solid #444 }
+.role-badge.tank { background: rgba(134,239,172,0.12); color:#86efac }
+.role-badge.dps { background: rgba(255,120,79,0.12); color:#ff784f }
+.role-badge.healer { background: rgba(255,213,121,0.12); color:#ffd579 }
