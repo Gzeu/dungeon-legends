@@ -1,1 +1,29 @@
-<file omitted for brevity>
+/* Responsive helpers for common breakpoints */
+
+:root {
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
+
+/* Mobile-first base already exists; enhance layouts at breakpoints */
+
+@media (min-width: var(--bp-sm)) {
+  .teaser { grid-template-columns: repeat(2, minmax(260px, 1fr)) }
+}
+
+@media (min-width: var(--bp-md)) {
+  .features { grid-template-columns: repeat(3, minmax(200px, 1fr)) }
+  .players-row { justify-content: center }
+}
+
+@media (min-width: var(--bp-lg)) {
+  .features { grid-template-columns: repeat(4, minmax(200px, 1fr)) }
+  .game-board { display: grid; grid-template-columns: 1fr 320px; gap: 16px }
+}
+
+@media (min-width: var(--bp-xl)) {
+  .hero h1 { font-size: 3.6rem }
+  .room-image img { aspect-ratio: 16/9 }
+}
