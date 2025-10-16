@@ -1,1 +1,71 @@
-<file omitted for brevity>
+:root {
+  /* Core palette */
+  --color-bg: #0f0f0f;
+  --color-surface: #151515;
+  --color-border: #2a2a2a;
+  --color-text: #eaeaea;
+  --color-muted: #999999;
+
+  /* Brand accents */
+  --accent-primary: #ff784f;   /* fire/orange */
+  --accent-secondary: #ffd579; /* light/gold */
+  --accent-arcane: #67a7ff;    /* ice/arcane */
+  --accent-nature: #86efac;    /* nature/green */
+  --accent-shadow: #7a7a8a;    /* shadow/gray */
+
+  /* States */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger:  #ef4444;
+
+  /* Cards rarity */
+  --rarity-common: rgba(255,255,255,0.02);
+  --rarity-uncommon: rgba(121,255,168,0.08);
+  --rarity-rare: rgba(103,167,255,0.10);
+  --rarity-epic: rgba(199,103,255,0.12);
+  --rarity-legendary: rgba(255,213,121,0.16);
+
+  /* Shadows/Glows */
+  --glow-primary: 0 0 18px rgba(255,120,79,0.16);
+  --glow-secondary: 0 0 18px rgba(255,213,121,0.16);
+
+  /* Radii & spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+}
+
+/* Dark Gothic theme (default) */
+html, body { background: var(--color-bg); color: var(--color-text); }
+
+.card-surface { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+
+.btn-primary { background: var(--accent-primary); color: #111; border: 1px solid #cc6342; border-radius: var(--radius-sm); }
+.btn-secondary { background: #222; color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+.btn-accent { background: var(--accent-secondary); color: #111; border-radius: var(--radius-sm); }
+
+/* Rarity helpers */
+.card.common { background: linear-gradient(180deg, var(--rarity-common), transparent); box-shadow: var(--glow-primary) inset; }
+.card.uncommon { background: linear-gradient(180deg, var(--rarity-uncommon), transparent); box-shadow: 0 0 10px var(--rarity-uncommon) inset; }
+.card.rare { background: linear-gradient(180deg, var(--rarity-rare), transparent); box-shadow: 0 0 12px var(--rarity-rare) inset; }
+.card.epic { background: linear-gradient(180deg, var(--rarity-epic), transparent); box-shadow: 0 0 14px var(--rarity-epic) inset; }
+.card.legendary { background: linear-gradient(180deg, var(--rarity-legendary), transparent); box-shadow: 0 0 18px var(--rarity-legendary) inset; }
+
+/* Utility classes */
+.text-muted { color: var(--color-muted); }
+.border-default { border: 1px solid var(--color-border); }
+.surface { background: var(--color-surface); }
+
+/* Theming hook (future light theme) */
+/*
+:root.light {
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #0f0f0f;
+  --color-muted: #6b7280;
+}
+*/
