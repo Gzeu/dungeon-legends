@@ -1,0 +1,9 @@
+{
+  "spells": [
+    { "id": "fireball", "name": "Fireball", "school": "fire", "manaCost": 2, "rarity": "common", "effect": "+3 damage and Ignite (2)" },
+    { "id": "ice_shard", "name": "Ice Shard", "school": "ice", "manaCost": 2, "rarity": "common", "effect": "+2 damage and Slow (1)" },
+    { "id": "nature_grace", "name": "Nature's Grace", "school": "nature", "manaCost": 2, "rarity": "uncommon", "effect": "Heal 3 HP and Regenerate (2)" },
+    { "id": "shadow_strike", "name": "Shadow Strike", "school": "shadow", "manaCost": 2, "rarity": "uncommon", "effect": "+3 damage and Poison (2)" },
+    { "id": "blessing", "name": "Blessing", "school": "light", "manaCost": 2, "rarity": "rare", "effect": "Party +1 ATK (2)" }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "equipment": [
+    { "id": "iron_sword", "name": "Iron Sword", "type": "weapon", "rarity": "common", "effect": "+1 Attack" },
+    { "id": "chain_mail", "name": "Chain Mail", "type": "armor", "rarity": "common", "effect": "+1 Defense" },
+    { "id": "magic_robes", "name": "Magic Robes", "type": "armor", "rarity": "uncommon", "effect": "+1 Defense and Mana regeneration" },
+    { "id": "flame_blade", "name": "Flame Blade", "type": "weapon", "rarity": "rare", "effect": "+2 Attack and Ignite on hit" }
+  ]
+}
