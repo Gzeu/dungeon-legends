@@ -1,3 +1,5 @@
+/* Enhanced CSS for Commit 3 - Mana, Status Effects, Equipment UI */
+
 /* Dark Dungeon Gothic - Complete Styles */
 :root {
     --color-primary: #8B4513;
@@ -9,6 +11,9 @@
     --color-success: #228B22;
     --color-warning: #DAA520;
     --color-danger: #8B0000;
+    --color-mana: #4169E1;
+    --color-rare: #9932CC;
+    --color-epic: #FF6347;
 }
 
 * {
@@ -137,7 +142,7 @@ h1, h2, h3, h4 {
 }
 
 .setup-controls {
-    background: rgba(64, 64, 64, 0.8) url('/assets/images/textures/wood.webp');
+    background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp');
     background-size: 512px 512px;
     background-blend-mode: overlay;
     padding: 2rem;
@@ -212,29 +217,300 @@ h1, h2, h3, h4 {
 .room-enemy { margin-top: 1rem; padding: 1rem; background: rgba(139, 0, 0, 0.3); border-radius: 8px; border: 2px solid var(--color-danger); }
 .enemy-stats { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem; }
 
-.players-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+.players-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
 
-.player-status { background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); background-size: 512px 512px; background-blend-mode: overlay; border: 2px solid var(--color-secondary); border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); }
+.player-status { 
+    background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); background-size: 512px 512px; background-blend-mode: overlay; 
+    border: 2px solid var(--color-secondary); border-radius: 12px; padding: 1rem; text-align: center; 
+    box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); 
+    position: relative;
+}
+
 .player-status.current-player { border-color: var(--color-accent); background: rgba(255, 69, 0, 0.1); box-shadow: 0 0 15px rgba(255, 69, 0, 0.3); }
+.player-status.targetable { border-color: var(--color-success); background: rgba(34, 139, 34, 0.1); cursor: pointer; animation: targetPulse 1s ease-in-out infinite; }
 
-.player-stats { display: flex; justify-content: space-around; margin-top: 0.5rem; }
-.player-stats .health-bar .stat-value::after { content: ''; display: block; height: 6px; margin-top: 4px; background: linear-gradient(90deg, #8B0000, #FF4500); border-radius: 4px; }
+@keyframes targetPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(34, 139, 34, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(34, 139, 34, 0.6); }
+}
 
-.action-area { background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); background-size: 512px 512px; background-blend-mode: overlay; border-radius: 12px; border: 2px solid var(--color-accent); padding: 2rem; text-align: center; box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); }
+.player-stats { display: flex; justify-content: space-around; margin-top: 0.5rem; flex-wrap: wrap; }
+
+/* Enhanced Health and Mana Bars */
+.health-bar, .mana-bar {
+    position: relative;
+    margin: 0.2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.health-bar .bar-visual, .mana-bar .bar-visual {
+    width: 80px;
+    height: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.health-bar .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B0000, #FF4500);
+    transition: width 0.5s ease;
+}
+
+.mana-bar .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #000080, #4169E1);
+    transition: width 0.5s ease;
+}
+
+/* Status Effects Display */
+.status-effects {
+    display: flex;
+    gap: 0.3rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    min-height: 24px;
+}
+
+.status-effect {
+    background: rgba(0,0,0,0.6);
+    border-radius: 12px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--color-accent);
+    position: relative;
+}
+
+.status-effect .duration {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bg);
+}
+
+/* Equipment Display */
+.equipment-display {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.equipment-slot {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--color-secondary);
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+    min-width: 60px;
+}
+
+.equipment-slot.equipped {
+    border-color: var(--color-accent);
+    background: rgba(255, 69, 0, 0.1);
+}
+
+.action-area { 
+    background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); 
+    background-size: 512px 512px; background-blend-mode: overlay; 
+    border-radius: 12px; border: 2px solid var(--color-accent); padding: 2rem; text-align: center; 
+    box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); 
+}
+
 .action-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
 
-.hand-display { background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); background-size: 512px 512px; background-blend-mode: overlay; border-radius: 12px; border: 2px solid var(--color-accent); padding: 1rem; box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); }
-.cards-container { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+.hand-display { 
+    background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); 
+    background-size: 512px 512px; background-blend-mode: overlay; 
+    border-radius: 12px; border: 2px solid var(--color-accent); padding: 1rem; 
+    box-shadow: 0 0 24px rgba(255,69,0,0.2), inset 0 0 12px rgba(255,69,0,0.08); 
+}
 
-/* Card visuals */
-.cards-container .card, .hero-card { position: relative; border-radius: 12px; overflow: hidden; }
-.cards-container .card::before, .hero-card::before { content: ''; position: absolute; inset: 0; background: url('/assets/images/ui/card-frame.webp') center/cover no-repeat; pointer-events: none; }
-.cards-container .card-back { background: url('/assets/images/ui/card-back.webp') center/cover no-repeat; }
+/* Enhanced Card Display */
+.cards-container { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-top: 1rem; }
+
+.game-card {
+    width: 120px;
+    height: 160px;
+    background: var(--color-card);
+    border: 2px solid var(--color-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card:hover:not(.unplayable) {
+    transform: translateY(-5px) scale(1.05);
+    border-color: var(--color-accent);
+    box-shadow: 0 8px 16px rgba(255, 69, 0, 0.4);
+}
+
+.game-card.unplayable {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.game-card .mana-cost {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--color-mana);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.game-card .rarity-gem {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.rarity-common { background: #C0C0C0; }
+.rarity-uncommon { background: #32CD32; }
+.rarity-rare { background: var(--color-rare); }
+.rarity-epic { background: var(--color-epic); }
+
+.card-content {
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    text-align: center;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.card-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 0.2rem;
+}
+
+.card-type {
+    font-size: 0.6rem;
+    color: var(--color-secondary);
+    margin-bottom: 0.3rem;
+}
+
+.card-effect {
+    font-size: 0.6rem;
+    color: var(--color-text);
+    line-height: 1.2;
+}
+
+/* Event Cards Special Styling */
+.event-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: rgba(20, 20, 20, 0.95) url('/assets/images/textures/wood.webp');
+    background-size: 512px 512px;
+    background-blend-mode: overlay;
+    border: 3px solid var(--color-accent);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 500px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.event-story {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--color-text);
+}
+
+.event-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.choice-btn {
+    background: var(--color-primary);
+    border: 2px solid var(--color-accent);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+}
+
+.choice-btn:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    transform: scale(1.02);
+}
+
+/* Game Message System */
+.game-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(139, 69, 19, 0.95);
+    color: var(--color-text);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    border: 2px solid var(--color-accent);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.game-message.visible {
+    opacity: 1;
+}
 
 .loading-spinner { font-size: 4rem; animation: spin 2s linear infinite; margin-bottom: 1rem; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.rules { background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); background-size: 512px 512px; background-blend-mode: overlay; padding: 2rem; border-radius: 12px; border: 2px solid var(--color-accent); margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.6); text-align: left; }
+.rules { 
+    background: rgba(20, 20, 20, 0.72) url('/assets/images/textures/wood.webp'); 
+    background-size: 512px 512px; background-blend-mode: overlay; 
+    padding: 2rem; border-radius: 12px; border: 2px solid var(--color-accent); margin-bottom: 2rem; 
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6); text-align: left; 
+}
 
 .rules h3 { color: var(--color-accent); margin-top: 1.5rem; margin-bottom: 0.8rem; }
 .rules h3:first-child { margin-top: 0; }
@@ -253,7 +529,35 @@ h1, h2, h3, h4 {
 .hidden { display: none !important; }
 
 /* Responsive */
-@media (max-width: 768px) { .container { padding: 1rem; } .game-title { font-size: 2.5rem; } .subtitle { font-size: 1rem; } .heroes-container { grid-template-columns: 1fr 1fr; gap: 1rem; } .hero-card { padding: 1rem; } .hero-icon { font-size: 2rem; } .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; width: 100%; max-width: 300px; } .setup-controls, .rules { padding: 1.5rem; } .game-header { flex-direction: column; gap: 1rem; text-align: center; } .players-display { grid-template-columns: 1fr 1fr; } .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.5rem; } }
-@media (max-width: 768px) and (orientation: landscape) { .game-title { font-size: 2rem; margin-bottom: 0.5rem; } .subtitle { margin-bottom: 1rem; } .heroes-container { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; } .hero-card { padding: 0.8rem; } .hero-icon { font-size: 1.5rem; margin-bottom: 0.5rem; } }
-@media (hover: none) and (pointer: coarse) { .btn, .hero-card { min-height: 44px; min-width: 44px; } .hero-card { padding: 1.2rem; } }
-@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+@media (max-width: 768px) { 
+    .container { padding: 1rem; } 
+    .game-title { font-size: 2.5rem; } 
+    .subtitle { font-size: 1rem; } 
+    .heroes-container { grid-template-columns: 1fr 1fr; gap: 1rem; } 
+    .hero-card { padding: 1rem; } 
+    .hero-icon { font-size: 2rem; } 
+    .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; width: 100%; max-width: 300px; } 
+    .setup-controls, .rules { padding: 1.5rem; } 
+    .game-header { flex-direction: column; gap: 1rem; text-align: center; } 
+    .players-display { grid-template-columns: 1fr; } 
+    .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.5rem; } 
+    .game-card { width: 100px; height: 140px; }
+    .cards-container { gap: 0.5rem; }
+}
+
+@media (max-width: 768px) and (orientation: landscape) { 
+    .game-title { font-size: 2rem; margin-bottom: 0.5rem; } 
+    .subtitle { margin-bottom: 1rem; } 
+    .heroes-container { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; } 
+    .hero-card { padding: 0.8rem; } 
+    .hero-icon { font-size: 1.5rem; margin-bottom: 0.5rem; } 
+}
+
+@media (hover: none) and (pointer: coarse) { 
+    .btn, .hero-card, .game-card { min-height: 44px; min-width: 44px; } 
+    .hero-card { padding: 1.2rem; } 
+}
+
+@media (prefers-reduced-motion: reduce) { 
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } 
+}
