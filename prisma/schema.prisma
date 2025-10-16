@@ -1,0 +1,719 @@
+// Prisma Schema for Advanced RPG with Full Feature Set
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  username      String?   @unique
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLogin     DateTime?
+
+  // Game Statistics
+  gamesPlayed     Int @default(0)
+  gamesWon        Int @default(0)
+  totalTreasure   Int @default(0)
+  dragonsKilled   Int @default(0)
+  totalPlayTime   Int @default(0) // in minutes
+  highestStreak   Int @default(0)
+  
+  // Progression
+  accountLevel    Int @default(1)
+  accountXP       Int @default(0)
+  prestigePoints  Int @default(0)
+  
+  // Settings & Preferences
+  preferences     Json? // UI settings, audio, notifications
+  
+  // Relationships
+  heroes          Hero[]
+  games           GameParticipant[]
+  guilds          GuildMember[]
+  achievements    UserAchievement[]
+  friends         Friendship[] @relation("UserFriends")
+  friendOf        Friendship[] @relation("FriendOfUser")
+  createdContent  UserContent[]
+  
+  // Authentication (NextAuth)
+  accounts        Account[]
+  sessions        Session[]
+
+  @@map("users")
+}
+
+model Hero {
+  id            String   @id @default(cuid())
+  type          String   // 'knight', 'wizard', 'rogue', 'cleric', 'paladin', 'necromancer'
+  level         Int      @default(1)
+  xp            Int      @default(0)
+  prestigeLevel Int      @default(0)
+  
+  // Base Stats (enhanced by progression)
+  baseHealth    Int      @default(5)
+  baseMana      Int      @default(3)
+  baseAttack    Int      @default(1)
+  baseDefense   Int      @default(0)
+  
+  // Progression Data
+  skills        Json     @default("[]") // Array of unlocked skill IDs
+  attributes    Json     @default("{\"atk\":0,\"def\":0,\"hp\":0,\"mp\":0}") // Bonus points allocated
+  equipment     Json     @default("{\"weapon\":null,\"armor\":null,\"accessory\":null,\"trinket\":null}")
+  masteries     Json     @default("{}") // Mastery progress per weapon/spell type
+  
+  // Advanced Progression
+  artifacts     Json     @default("[]") // Legendary items with unique effects
+  specializations Json   @default("[]") // Advanced class features
+  titles        Json     @default("[]") // Earned titles and their bonuses
+  
+  // Combat Statistics  
+  gamesPlayed     Int      @default(0)
+  victoriesWon    Int      @default(0)
+  enemiesKilled   Int      @default(0)
+  bossesDefeated  Int      @default(0)
+  treasureFound   Int      @default(0)
+  spellsCast      Int      @default(0)
+  damageDealt     Int      @default(0)
+  damageHealed    Int      @default(0)
+  
+  // Relationships
+  owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId       String
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([ownerId, type])
+  @@map("heroes")
+}
+
+model Game {
+  id              String      @id @default(cuid())
+  mode            GameMode    @default(COOPERATIVE)
+  type            GameType    @default(CASUAL)
+  status          GameStatus  @default(WAITING)
+  
+  // Game Configuration
+  maxPlayers      Int         @default(4)
+  difficulty      Difficulty  @default(NORMAL)
+  dungeonPack     String      @default("classic")
+  customRules     Json?       // Optional rule modifications
+  
+  // Current Game State
+  currentRoom     Int         @default(0)
+  currentPlayer   Int         @default(0)
+  turnCounter     Int         @default(0)
+  roundCounter    Int         @default(0)
+  gameData        Json        // Complete serialized game state
+  
+  // Match Results
+  winnerIds       String[]    @default([])
+  totalTreasure   Int         @default(0)
+  roomsCleared    Int         @default(0)
+  duration        Int?        // Game duration in seconds
+  
+  // Timestamps
+  createdAt       DateTime    @default(now())
+  startedAt       DateTime?
+  completedAt     DateTime?
+  lastActionAt    DateTime    @default(now())
+  
+  // Advanced Features
+  isRanked        Boolean     @default(false)
+  spectatorMode   Boolean     @default(false)
+  replayData      Json?       // For match replays
+  
+  // Relationships
+  participants    GameParticipant[]
+  actionHistory   GameAction[]
+  spectators      GameSpectator[]
+  
+  // Event Associations
+  tournament      Tournament? @relation(fields: [tournamentId], references: [id])
+  tournamentId    String?
+  guild           Guild?      @relation(fields: [guildId], references: [id])
+  guildId         String?
+  dailyChallenge  DailyChallenge? @relation(fields: [challengeId], references: [id])
+  challengeId     String?
+
+  @@map("games")
+}
+
+model GameParticipant {
+  id          String @id @default(cuid())
+  
+  game        Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId      String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+  
+  // Game Position
+  playerIndex Int    // 0, 1, 2, 3
+  heroType    String // Which hero class selected
+  heroLevel   Int    @default(1) // Snapshot of hero level at game start
+  
+  // AI Configuration (if AI player)
+  isAI        Boolean @default(false)
+  aiDifficulty String? // 'easy', 'normal', 'hard', 'nightmare'
+  aiPersonality String? // 'aggressive', 'defensive', 'supportive', etc.
+  
+  // Performance Tracking
+  finalTreasure   Int     @default(0)
+  damageDealt     Int     @default(0)
+  damageHealed    Int     @default(0)
+  spellsCast      Int     @default(0)
+  survived        Boolean @default(true)
+  mvpPoints       Int     @default(0) // Overall performance score
+  
+  // Rewards
+  xpEarned        Int     @default(0)
+  bonusRewards    Json?   // Special items/achievements earned
+  
+  // Timestamps
+  joinedAt      DateTime @default(now())
+  leftAt        DateTime?
+
+  @@unique([gameId, playerIndex])
+  @@map("game_participants")
+}
+
+model GameAction {
+  id          String   @id @default(cuid())
+  
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId      String
+  
+  playerIndex Int      // Who performed the action
+  actionType  String   // 'attack', 'defend', 'playCard', 'special', etc.
+  actionData  Json     // Action parameters (card played, target, etc.)
+  result      Json     // Action results (damage dealt, effects applied, etc.)
+  
+  // Game Context
+  turnNumber  Int      // Which turn this occurred
+  roomNumber  Int      // Which room this occurred in
+  gameTime    Int      // Seconds elapsed since game start
+  
+  timestamp   DateTime @default(now())
+
+  @@index([gameId, turnNumber])
+  @@map("game_actions")
+}
+
+model GameSpectator {
+  id       String @id @default(cuid())
+  
+  game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId   String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  
+  joinedAt DateTime @default(now())
+  leftAt   DateTime?
+
+  @@unique([gameId, userId])
+  @@map("game_spectators")
+}
+
+model Guild {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  tag         String   @unique // Short guild identifier [LEGEND]
+  description String?
+  icon        String?  // Custom guild icon/banner
+  
+  // Configuration
+  isPublic    Boolean  @default(true)
+  maxMembers  Int      @default(50)
+  minLevel    Int      @default(1) // Minimum account level to join
+  
+  // Guild Progression
+  guildLevel  Int      @default(1)
+  guildXP     Int      @default(0)
+  guildTreasure Int    @default(0)
+  
+  // Statistics
+  totalWins   Int      @default(0)
+  totalGames  Int      @default(0)
+  raidVictories Int    @default(0)
+  tournamentWins Int   @default(0)
+  
+  // Special Features
+  perks       Json     @default("[]") // Guild-wide bonuses
+  customRooms Json?    // Guild-created dungeon content
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  members     GuildMember[]
+  games       Game[]
+  tournaments Tournament[]
+  raids       GuildRaid[]
+
+  @@map("guilds")
+}
+
+model GuildMember {
+  id       String    @id @default(cuid())
+  
+  user     User      @relation(fields: [userId], references: [id])
+  userId   String
+  guild    Guild     @relation(fields: [guildId], references: [id])
+  guildId  String
+  
+  role     GuildRole @default(MEMBER)
+  joinedAt DateTime  @default(now())
+  
+  // Member Contributions
+  gamesPlayed     Int @default(0)
+  winsContributed Int @default(0)
+  treasureDonated Int @default(0)
+  
+  // Member Status
+  lastActive   DateTime @default(now())
+  weeklyPoints Int      @default(0)
+  totalPoints  Int      @default(0)
+
+  @@unique([userId, guildId])
+  @@map("guild_members")
+}
+
+model GuildRaid {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  
+  guild       Guild      @relation(fields: [guildId], references: [id])
+  guildId     String
+  
+  // Raid Configuration
+  difficulty    Difficulty @default(HARD)
+  maxMembers    Int        @default(8)
+  dungeonPack   String     @default("guild_raid")
+  
+  // Raid State
+  status        RaidStatus @default(PREPARING)
+  currentPhase  Int        @default(0)
+  bossesKilled  Int        @default(0)
+  treasureFound Int        @default(0)
+  
+  // Timing
+  scheduledAt DateTime
+  startedAt   DateTime?
+  completedAt DateTime?
+  
+  // Results
+  isVictory   Boolean?
+  rewards     Json?    // Distributed rewards
+  
+  participants GuildRaidParticipant[]
+
+  @@map("guild_raids")
+}
+
+model GuildRaidParticipant {
+  id      String @id @default(cuid())
+  
+  raid    GuildRaid @relation(fields: [raidId], references: [id])
+  raidId  String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  
+  heroType String // Which hero they brought
+  role     String // 'tank', 'damage', 'healer', 'support'
+  
+  // Performance
+  damageContribution Int @default(0)
+  healingContribution Int @default(0)
+  survived Boolean @default(true)
+  
+  joinedAt DateTime @default(now())
+
+  @@unique([raidId, userId])
+  @@map("guild_raid_participants")
+}
+
+model Tournament {
+  id            String           @id @default(cuid())
+  name          String
+  description   String?
+  
+  // Tournament Configuration
+  format        TournamentFormat @default(SINGLE_ELIMINATION)
+  maxParticipants Int            @default(16)
+  entryFee        Int            @default(0) // Treasure cost to enter
+  
+  // Tournament Rules
+  allowedHeroLevels String       @default("1-25") // "1-5", "10+", etc.
+  bannedCards       Json         @default("[]") // List of card IDs
+  specialRules      Json?        // Custom tournament mechanics
+  
+  // Status and Timing
+  status        TournamentStatus @default(UPCOMING)
+  registrationStart DateTime
+  registrationEnd   DateTime
+  startTime         DateTime
+  endTime           DateTime?
+  
+  // Rewards Structure
+  prizes        Json             // { "1st": {...}, "2nd": {...}, ... }
+  
+  // Relationships
+  guild         Guild?           @relation(fields: [guildId], references: [id])
+  guildId       String?
+  games         Game[]
+  participants  TournamentParticipant[]
+  
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@map("tournaments")
+}
+
+model TournamentParticipant {
+  id           String     @id @default(cuid())
+  
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+  
+  // Tournament Progress
+  seed         Int?       // Initial seeding (1-16, 1-32, etc.)
+  currentRound Int        @default(1)
+  eliminated   Boolean    @default(false)
+  finalRank    Int?
+  
+  // Hero Selection
+  heroType     String     // Which hero they're using
+  heroLevel    Int        // Snapshot of hero level at registration
+  deckList     Json?      // Custom deck for tournament
+  
+  // Performance
+  wins         Int        @default(0)
+  losses       Int        @default(0)
+  totalScore   Int        @default(0)
+  
+  registeredAt DateTime   @default(now())
+
+  @@unique([tournamentId, userId])
+  @@map("tournament_participants")
+}
+
+model Achievement {
+  id          String @id @default(cuid())
+  name        String @unique
+  title       String // Display name
+  description String
+  icon        String
+  
+  // Classification
+  category    AchievementCategory // combat, exploration, social, progression
+  rarity      AchievementRarity @default(COMMON)
+  points      Int      @default(10) // Achievement points awarded
+  
+  // Requirements (flexible JSON structure)
+  requirements Json   // Complex conditions for earning
+  rewards      Json   // XP, items, titles, etc.
+  
+  // Statistics
+  totalEarned  Int    @default(0)
+  firstEarnedBy String? // User ID who earned it first
+  firstEarnedAt DateTime?
+  
+  // Visibility
+  isHidden     Boolean @default(false) // Secret achievements
+  isLegacy     Boolean @default(false) // No longer earnable
+  
+  // Relationships
+  earnedBy     UserAchievement[]
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String @id @default(cuid())
+  
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  achievementId String
+  
+  // Progress Tracking
+  progress      Json?    // For multi-step achievements
+  completedAt   DateTime @default(now())
+  
+  // Context
+  gameId        String?  // Game where achievement was earned
+  heroType      String?  // Hero that earned it
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+model DailyChallenge {
+  id          String   @id @default(cuid())
+  date        DateTime @unique @db.Date
+  title       String
+  description String
+  
+  // Challenge Configuration
+  type        ChallengeType @default(COMBAT)
+  difficulty  Difficulty    @default(NORMAL)
+  requirements Json         // What must be accomplished
+  restrictions Json?        // Hero/card limitations
+  
+  // Rewards
+  xpReward      Int    @default(50)
+  treasureReward Int   @default(10)
+  specialRewards Json? // Rare items, titles, etc.
+  
+  // Statistics
+  participants Int     @default(0)
+  completions  Int     @default(0)
+  averageScore Float?  
+  
+  // Relationships
+  games       Game[]
+  
+  createdAt    DateTime @default(now())
+
+  @@map("daily_challenges")
+}
+
+model UserContent {
+  id          String      @id @default(cuid())
+  type        ContentType // 'dungeon', 'card', 'tournament_format'
+  name        String
+  description String?
+  
+  // Content Data
+  data        Json        // The actual content definition
+  metadata    Json?       // Tags, difficulty, etc.
+  
+  // Publishing
+  isPublished Boolean     @default(false)
+  isVerified  Boolean     @default(false) // Approved by moderators
+  
+  // Statistics
+  downloads   Int         @default(0)
+  rating      Float?      // Average user rating
+  ratingCount Int         @default(0)
+  
+  // Relationships
+  creator     User        @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  publishedAt DateTime?
+
+  @@map("user_content")
+}
+
+model Friendship {
+  id        String @id @default(cuid())
+  
+  user      User   @relation("UserFriends", fields: [userId], references: [id])
+  userId    String
+  friend    User   @relation("FriendOfUser", fields: [friendId], references: [id])
+  friendId  String
+  
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  
+  // Interaction History
+  gamesPlayedTogether Int @default(0)
+  lastInteraction     DateTime @default(now())
+
+  @@unique([userId, friendId])
+  @@map("friendships")
+}
+
+model Leaderboard {
+  id        String          @id @default(cuid())
+  category  LeaderboardType // 'treasure', 'wins', 'level', 'guild_rank'
+  period    String          // 'daily', 'weekly', 'monthly', 'all_time'
+  
+  // Data
+  rankings  Json            // Array of user rankings
+  
+  // Metadata
+  generatedAt DateTime      @default(now())
+  expiresAt   DateTime?     // When this leaderboard becomes stale
+
+  @@unique([category, period])
+  @@map("leaderboards")
+}
+
+// Authentication Models (NextAuth)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Enums
+enum GameMode {
+  COOPERATIVE     // Work together to defeat dungeon
+  COMPETITIVE     // Most treasure wins
+  GUILD_RAID      // Large-scale cooperative
+  TOURNAMENT      // Bracket-style elimination
+  DAILY_CHALLENGE // Special daily objectives
+  CUSTOM          // User-created game modes
+}
+
+enum GameType {
+  CASUAL          // No ranking effects
+  RANKED          // Affects player rating
+  TOURNAMENT      // Part of organized tournament
+  GUILD_EVENT     // Guild internal competition
+  DAILY_CHALLENGE // Daily challenge completion
+}
+
+enum GameStatus {
+  WAITING    // Waiting for players
+  ACTIVE     // Game in progress
+  PAUSED     // Temporarily suspended
+  COMPLETED  // Finished normally
+  ABANDONED  // Left by all players
+  EXPIRED    // Timed out
+}
+
+enum Difficulty {
+  TUTORIAL   // Learning mode
+  EASY       // 75% normal stats
+  NORMAL     // Standard difficulty
+  HARD       // 125% enemy stats
+  NIGHTMARE  // 150% stats + special mechanics
+  IMPOSSIBLE // 200% stats + extreme mechanics
+}
+
+enum GuildRole {
+  MEMBER     // Basic member
+  VETERAN    // Experienced member
+  OFFICER    // Leadership role
+  LEADER     // Guild owner
+}
+
+enum RaidStatus {
+  PREPARING  // Setup phase
+  ACTIVE     // In progress
+  COMPLETED  // Finished
+  FAILED     // Raid failed
+  CANCELLED  // Cancelled by leader
+}
+
+enum TournamentStatus {
+  UPCOMING           // Not yet open
+  REGISTRATION_OPEN  // Accepting participants
+  REGISTRATION_CLOSED // Full or deadline passed
+  ACTIVE            // Tournament running
+  COMPLETED         // Tournament finished
+  CANCELLED         // Tournament cancelled
+}
+
+enum TournamentFormat {
+  SINGLE_ELIMINATION // Standard bracket
+  DOUBLE_ELIMINATION // Losers bracket
+  ROUND_ROBIN        // Everyone plays everyone
+  SWISS              // Pairing based on performance
+  LEAGUE             // Season-long competition
+}
+
+enum AchievementCategory {
+  COMBAT      // Fighting and damage
+  EXPLORATION // Dungeon clearing
+  SOCIAL      // Friends and guilds
+  PROGRESSION // Leveling and skills
+  COLLECTION  // Items and cards
+  SPECIAL     // Rare/hidden achievements
+}
+
+enum AchievementRarity {
+  COMMON     // Easy to earn
+  UNCOMMON   // Moderate effort
+  RARE       // Significant accomplishment
+  EPIC       // Major milestone
+  LEGENDARY  // Extreme achievement
+  MYTHIC     // Nearly impossible
+}
+
+enum FriendshipStatus {
+  PENDING   // Friend request sent
+  ACCEPTED  // Friends
+  BLOCKED   // User blocked
+  DECLINED  // Friend request declined
+}
+
+enum LeaderboardType {
+  TREASURE       // Total treasure earned
+  WINS           // Total victories
+  LEVEL          // Highest hero level
+  GUILD_RANK     // Guild contribution points
+  TOURNAMENT     // Tournament performance
+  SPEED_RUN      // Fastest dungeon clears
+  PERFECTIONIST  // Flawless victories
+}
+
+enum ContentType {
+  DUNGEON           // Custom dungeon rooms
+  CARD              // Custom spell/equipment
+  TOURNAMENT_FORMAT // Tournament rule set
+  GUILD_CHALLENGE   // Guild-specific objectives
+}
+
+enum ChallengeType {
+  COMBAT     // Defeat specific enemies
+  SURVIVAL   // Survive X turns
+  TREASURE   // Collect X treasure
+  SPEEDRUN   // Complete in time limit
+  PERFECT    // No damage taken
+  MASTERY    // Use specific skills/spells
+}
