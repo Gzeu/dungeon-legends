@@ -1,0 +1,2 @@
+// Download images from generated URLs and place under public/* when running locally or via CI
+// This placeholder ensures paths exist in repo

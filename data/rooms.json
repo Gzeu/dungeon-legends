@@ -1,0 +1,9 @@
+{
+  "rooms": [
+    { "id": 1, "name": "Entrance Hall", "type": "safe", "description": "A safe starting point.", "icon": "🚪", "completed": false, "rewards": [{"type": "treasure", "amount": 1}], "backgroundImage": "/images/rooms/entrance.jpg" },
+    { "id": 2, "name": "Goblin Warren", "type": "combat", "description": "Goblins lurk in the shadows.", "icon": "👹", "enemy": { "name": "Goblin", "currentHP": 2, "maxHP": 2, "attack": 1, "defense": 0, "abilities": [], "statusEffects": [], "image": "/images/enemies/goblin.jpg", "lootTable": [] }, "completed": false, "rewards": [{"type": "treasure", "amount": 1}], "backgroundImage": "/images/rooms/warren.jpg" },
+    { "id": 3, "name": "Trap Chamber", "type": "challenge", "description": "A room full of deadly traps.", "icon": "⚠️", "completed": false, "rewards": [{"type": "treasure", "amount": 2}], "backgroundImage": "/images/rooms/trap.jpg" },
+    { "id": 4, "name": "Treasure Vault", "type": "combat", "description": "Guarded by a fierce orc.", "icon": "💰", "enemy": { "name": "Orc", "currentHP": 4, "maxHP": 4, "attack": 2, "defense": 1, "abilities": [], "statusEffects": [], "image": "/images/enemies/orc.jpg", "lootTable": [] }, "completed": false, "rewards": [{"type": "treasure", "amount": 3}], "backgroundImage": "/images/rooms/vault.jpg" },
+    { "id": 5, "name": "Dragon's Lair", "type": "boss", "description": "The Ancient Dragon awaits.", "icon": "🐉", "enemy": { "name": "Ancient Dragon", "currentHP": 10, "maxHP": 10, "attack": 3, "defense": 1, "abilities": ["Fire Breath"], "statusEffects": [], "image": "/images/enemies/dragon.jpg", "lootTable": [] }, "completed": false, "rewards": [{"type": "treasure", "amount": 5}], "backgroundImage": "/images/rooms/lair.jpg" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "heroes": [
+    { "type": "knight", "name": "Knight", "icon": "🛡️", "base": { "health": 8, "mana": 3, "attack": 2, "defense": 2 }, "special": "shield_wall" },
+    { "type": "wizard", "name": "Wizard", "icon": "🧙", "base": { "health": 5, "mana": 5, "attack": 1, "defense": 0 }, "special": "arcane_blast" },
+    { "type": "rogue", "name": "Rogue", "icon": "🗡️", "base": { "health": 6, "mana": 4, "attack": 2, "defense": 1 }, "special": "shadow_step" },
+    { "type": "cleric", "name": "Cleric", "icon": "⛪", "base": { "health": 7, "mana": 4, "attack": 1, "defense": 1 }, "special": "divine_intervention" }
+  ],
+  "skills": {
+    "knight": [
+      { "id": "atk_bonus_1", "name": "Weapon Master", "tree": "combat", "description": "+1 Attack" },
+      { "id": "def_bonus_1", "name": "Armor Expert", "tree": "defense", "description": "+1 Defense" }
+    ],
+    "wizard": [
+      { "id": "spell_power", "name": "Spell Power", "tree": "elemental", "description": "+1 Spell Damage" },
+      { "id": "efficiency", "name": "Mana Efficiency", "tree": "mana", "description": "Spells cost -1 mana (min 1)" }
+    ]
+  }
+}

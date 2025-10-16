@@ -1,0 +1,91 @@
+{
+  "version": 2,
+  "name": "dungeon-legends-rpg",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "NEXTAUTH_URL": "@nextauth-url",
+    "GOOGLE_CLIENT_ID": "@google-client-id",
+    "GOOGLE_CLIENT_SECRET": "@google-client-secret",
+    "DISCORD_CLIENT_ID": "@discord-client-id",
+    "DISCORD_CLIENT_SECRET": "@discord-client-secret",
+    "REDIS_URL": "@redis-url",
+    "WEBSOCKET_SECRET": "@websocket-secret"
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 30
+    },
+    "app/api/websocket.ts": {
+      "runtime": "edge"
+    },
+    "app/api/cron/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 300
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/ws",
+      "destination": "/api/websocket"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/daily-challenge",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/tournament",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/leaderboard",
+      "schedule": "*/15 * * * *"
+    }
+  ]
+}

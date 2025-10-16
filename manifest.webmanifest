@@ -1,24 +1,106 @@
 {
-    "name": "Dungeon Legends - Dark Gothic Card Game",
-    "short_name": "DungeonLegends",
-    "description": "A dark fantasy dungeon crawler card game for 2-4 players",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#2F2F2F",
-    "theme_color": "#FF4500",
-    "orientation": "portrait-primary",
-    "categories": ["games", "entertainment"],
-    "lang": "en",
-    "icons": [
-        {
-            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMyRjJGMkYiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjRkY0NTAwIj4KPHA+8J+PsDwvcD4KPC9zdmc+Cjwvc3ZnPgo=",
-            "sizes": "192x192",
-            "type": "image/svg+xml"
-        },
-        {
-            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiMyRjJGMkYiLz4KPHN2ZyB4PSIxMjgiIHk9IjEyOCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGNDUwMCI+CjxwPvCfj7A8L3A+Cjwvc3ZnPgo8L3N2Zz4K",
-            "sizes": "512x512", 
-            "type": "image/svg+xml"
-        }
-    ]
+  "name": "Dungeon Legends",
+  "short_name": "DungeonRPG",
+  "description": "Medieval fantasy RPG with card-based combat and character progression",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2F2F2F",
+  "theme_color": "#FF4500",
+  "orientation": "portrait-primary",
+  "categories": ["games", "entertainment"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/game-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Game Interface"
+    },
+    {
+      "src": "/screenshots/game-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Game View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Play",
+      "short_name": "Play",
+      "description": "Start a quick adventure",
+      "url": "/game/quick-play",
+      "icons": [{
+        "src": "/icons/icon-96x96.png",
+        "sizes": "96x96"
+      }]
+    },
+    {
+      "name": "Profile",
+      "short_name": "Profile",
+      "description": "View hero progress",
+      "url": "/profile",
+      "icons": [{
+        "src": "/icons/icon-96x96.png",
+        "sizes": "96x96"
+      }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }
