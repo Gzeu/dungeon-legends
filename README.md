@@ -1,8 +1,8 @@
 # 🏰 Dungeon Legends RPG - Full-Stack Medieval Fantasy Game
 
-> Status: ✅ Production-ready core on main | 🔄 Graphics expansion in progress (branch)
+> Status: ✅ Production-ready core on main | 🔄 Graphics expansion staged (branch)
 
-## 🎯 What’s New
+## 🎯 Highlights
 - Advanced UI: Hero Selector Pro (3D tilt), Holographic Cards
 - Secure WebSocket + Chat, PWA, Prisma DB
 - Perf: LCP/CLS/TBT optimizations (preload, next/image, dynamic VFX)
@@ -12,10 +12,27 @@
 ```bash
 npm install
 npm run assets:all       # fetch core assets (icons, screenshots, base images)
-# optional non-destructive conversion
-node scripts/convert-webp.mjs
+node scripts/convert-webp.mjs  # optional non-destructive conversion
 npm run dev
 ```
+
+## 🔐 Environment (Vercel)
+- DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL
+- GOOGLE_CLIENT_ID/SECRET, GITHUB_ID/SECRET
+- WEBSOCKET_SECRET
+
+## 🧭 Branches & Status
+- main → source-of-truth (demo/prod)
+- feature/graphics-expansion → ActionBar + extended assets infra (awaiting HQ images)
+- feature/vercel-mvp-rpg → MERGED ✅ (safe to delete)
+- feature/advanced-ui → MERGED ✅ (safe to delete)
+
+## ✅ Open Tasks (Issue #2)
+- Perf: integrate RoomImage/EnemyThumb in game page (WebP fallback)
+- Graphics expansion: generate 10 HQ images (5 enemies, 5 ice caverns) and PR
+- Integrate ActionBar (icons + cooldown) into game UI
+- Branch housekeeping (delete merged branches)
+- Docs refresh (README + ASSETS-CHECKLIST)
 
 ## 🗂️ Key Scripts
 - `npm run assets:all` → fetch core assets + icons
@@ -30,23 +47,16 @@ npm run dev
 - Dynamic imports for heavy VFX
 - WebP fallback via `<picture>` wrapper (RoomImage/Picture)
 
-## 🧭 Branch Strategy
-- main → source-of-truth for demo/prod
-- feature/graphics-expansion → holds ActionBar + extended assets (awaiting HQ images)
-- merged: feature/vercel-mvp-rpg, feature/advanced-ui (can be deleted)
-
-## ✅ Tasks (see Issue #2)
-- Perf: integrate RoomImage/EnemyThumb in game page
-- Graphics expansion: generate HQ images (5 enemies, 5 ice caverns)
-- Integrate ActionBar (icons + cooldown) into game UI
-- Branch housekeeping (delete merged, keep expansion)
-- Docs refresh: README + ASSETS-CHECKLIST
-
 ## 📚 Docs
-- ASSETS-CHECKLIST.md – complete inventory, commands, QA
+- ASSETS-CHECKLIST.md – inventory, commands, QA
 - RELEASE-NOTES.md – highlights & known todos
 
-## 🔐 ENV (Vercel)
-- DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL
-- GOOGLE_CLIENT_ID/SECRET, GITHUB_ID/SECRET
-- GITHUB_ID/SECRET, WEBSOCKET_SECRET
+## 🧩 How to Deploy (Vercel)
+1) Set env vars (above) in Project Settings → Environment Variables
+2) Run assets scripts (if needed) and commit public/ changes
+3) Push to main → Vercel auto-deploys
+4) First deploy only (DB):
+```bash
+npx prisma db push
+npx prisma db seed
+```
