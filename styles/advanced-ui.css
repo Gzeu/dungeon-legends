@@ -1,0 +1,51 @@
+/* Advanced UI Styles for Landing, How-To, Lobby, Game Teasers */
+.landing { padding: 40px 20px; }
+.hero { text-align: center; padding: 60px 0; }
+.hero h1 { font-size: 3rem; color: #ff784f; text-shadow: 0 2px 12px rgba(255,120,79,0.4); }
+.tagline { color:#bbb; margin: 8px auto 16px; max-width: 720px; }
+.cta { display:flex; gap:12px; justify-content:center; }
+.btn-primary, .btn-secondary, .btn-accent { padding:12px 18px; border-radius: 10px; text-decoration:none; font-weight:700; }
+.btn-primary { background:#ff784f; color:#111; }
+.btn-secondary { background:#333; color:#eee; border:1px solid #555; }
+.btn-accent { background:#ffd579; color:#111; }
+
+.features { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin: 40px 0; }
+.feature { background: linear-gradient(180deg, rgba(255,120,79,0.08), rgba(0,0,0,0.2)); border:1px solid #444; border-radius:12px; padding:16px; text-align:center; }
+.feature .icon { font-size: 1.8rem; margin-bottom: 6px; }
+
+.teaser { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+.teaser-card { position:relative; overflow:hidden; border-radius:14px; padding:18px; border:1px solid #444; background:#151515; }
+.teaser-bg { position:absolute; inset:0; background: radial-gradient(800px 120px at top right, rgba(255,120,79,0.15), transparent), radial-gradient(800px 120px at bottom left, rgba(255,213,121,0.12), transparent); filter: blur(2px); }
+.teaser-bg.alt { background: radial-gradient(800px 120px at top right, rgba(121,168,255,0.15), transparent), radial-gradient(800px 120px at bottom left, rgba(255,213,121,0.12), transparent); }
+.teaser-card h3 { position:relative; z-index:2; color:#ffd579; }
+.teaser-card p { position:relative; z-index:2; color:#bbb; margin: 6px 0 12px; }
+
+.howto { padding: 40px 20px; max-width: 960px; margin: 0 auto; }
+.how-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin: 20px 0; }
+.how-card { background:#161616; border:1px solid #444; border-radius:12px; padding:16px; text-align:center; }
+.how-icon { font-size: 1.8rem; margin-bottom: 8px; }
+
+/* Lobby tweaks */
+.lobby-container { max-width: 420px; margin: 40px auto; background:#171717; border:1px solid #444; border-radius:12px; padding:16px; }
+.input { padding:10px 12px; border-radius:8px; background:#111; color:#eee; border:1px solid #555; }
+.btn-primary, .btn-secondary { display:inline-block; text-align:center; }
+
+/* Profile */
+.profile-container { max-width: 560px; margin: 40px auto; background:#171717; border:1px solid #444; border-radius:12px; padding:16px; }
+.btn-logout { padding: 8px 12px; background:#333; color:#eee; border:1px solid #555; border-radius:8px; }
+
+/* Sign In */
+.signin-container { max-width: 420px; margin: 80px auto; background:#171717; border:1px solid #444; border-radius:12px; padding:24px; text-align:center; }
+.btn-google, .btn-github { padding:10px 12px; border-radius:8px; border:1px solid #555; background:#111; color:#eee; display:flex; align-items:center; justify-content:center; }
+
+/* Anim helpers */
+.shake { animation: shake 0.6s ease; }
+@keyframes shake { 0%{ transform: translateX(0)} 25%{ transform: translateX(-6px)} 50%{ transform: translateX(6px)} 75%{ transform: translateX(-3px)} 100%{ transform: translateX(0)} }
+.level-up-burst { box-shadow: 0 0 32px rgba(255,213,121,0.45) inset; }
+.victory-glow { box-shadow: 0 0 48px rgba(121,255,168,0.35) inset; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2.2rem; }
+  .cta { flex-direction: column; }
+}
