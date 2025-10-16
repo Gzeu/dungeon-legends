@@ -1,25 +1,56 @@
-name: Assets CI
+name: Assets Management
 on:
   workflow_dispatch:
+    inputs:
+      force_download:
+        description: 'Force re-download all assets'
+        required: false
+        default: 'false'
+        type: boolean
   push:
     branches: [ feature/vercel-mvp-rpg ]
+    paths:
+      - 'scripts/fetch-all-assets.mjs'
+      - 'scripts/resize-icons-improved.mjs'
+      - '.github/workflows/assets.yml'
+
 jobs:
-  fetch-and-commit:
+  fetch-and-commit-assets:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: npm i sharp
-      - run: node scripts/fetch-assets.mjs
-      - run: node scripts/resize-icons.mjs
+          
+      - name: Install dependencies
+        run: npm install --only=dev sharp
+        
+      - name: Check existing assets
+        run: node scripts/fetch-all-assets.mjs --check
+        
+      - name: Download all assets
+        run: node scripts/fetch-all-assets.mjs
+        
+      - name: Resize PWA icons
+        run: node scripts/resize-icons-improved.mjs
+        
+      - name: Validate assets
+        run: node scripts/fetch-all-assets.mjs --check
+        
       - name: Commit assets
         run: |
-          git config user.name "assets-bot"
-          git config user.email "assets-bot@users.noreply.github.com"
-          git add public/icons/*.png public/images/*.png public/screenshots/*.png || true
-          git commit -m "CI: add fetched assets" || echo "Nothing to commit"
-          git push
+          git config --global user.name "Assets Bot"
+          git config --global user.email "assets-bot@users.noreply.github.com"
+          git add public/icons/*.png public/images/**/*.* public/screenshots/*.png public/*.svg || true
+          if git diff --cached --quiet; then
+            echo "No asset changes to commit"
+          else
+            git commit -m "Assets: Auto-fetch and commit generated assets"
+            git push
+          fi
