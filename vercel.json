@@ -18,19 +18,6 @@
     "REDIS_URL": "@redis-url",
     "WEBSOCKET_SECRET": "@websocket-secret"
   },
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    },
-    "app/api/websocket.ts": {
-      "runtime": "edge"
-    },
-    "app/api/cron/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 300
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
