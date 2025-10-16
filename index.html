@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dungeon Legends - Dark Gothic Card Game</title>
+    <title>Dungeon Legends - Dark Gothic RPG Card Game</title>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -23,11 +23,132 @@
     <div id="welcome-screen" class="screen active">
         <div class="container">
             <h1 class="game-title">🏰 Dungeon Legends</h1>
-            <p class="subtitle">Dark Gothic Adventure</p>
+            <p class="subtitle">Dark Gothic RPG Adventure</p>
             <div class="menu-buttons">
                 <button id="start-game" class="btn btn-primary">⚔️ Start Adventure</button>
+                <button id="single-player" class="btn btn-accent">🤖 Single Player</button>
                 <button id="how-to-play" class="btn btn-secondary">📜 How to Play</button>
+                <button id="view-profile" class="btn btn-secondary">📈 Hero Progress</button>
                 <button id="install-pwa" class="btn btn-accent hidden">📱 Install Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profile-screen" class="screen">
+        <div class="container">
+            <h2>📈 Hero Progress</h2>
+            <div class="profile-content">
+                <div class="player-stats-summary">
+                    <h3>Player Statistics</h3>
+                    <div class="stats-grid" id="player-stats-grid">
+                        <!-- Stats will be populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="heroes-progress">
+                    <h3>Hero Levels</h3>
+                    <div class="heroes-progress-grid" id="heroes-progress-grid">
+                        <!-- Hero progress will be populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="achievements-display">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid" id="achievements-grid">
+                        <!-- Achievements will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+            <button id="back-to-menu-profile" class="btn btn-secondary">← Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Single Player Setup Screen -->
+    <div id="single-player-screen" class="screen">
+        <div class="container">
+            <h2>🤖 Single Player Setup</h2>
+            <div class="setup-controls">
+                <div class="ai-settings">
+                    <label>AI Difficulty:</label>
+                    <select id="ai-difficulty-select">
+                        <option value="easy">Easy - Supportive AI</option>
+                        <option value="normal" selected>Normal - Balanced AI</option>
+                        <option value="hard">Hard - Tactical AI</option>
+                    </select>
+                </div>
+                
+                <div class="game-mode">
+                    <label>Game Mode:</label>
+                    <select id="single-game-mode-select">
+                        <option value="cooperative">🤝 Cooperative (AI helps you)</option>
+                        <option value="competitive">⚔️ Competitive (AI vs You)</option>
+                    </select>
+                </div>
+                
+                <div class="party-size">
+                    <label>Party Size:</label>
+                    <select id="single-party-size">
+                        <option value="2">1 Human + 1 AI</option>
+                        <option value="3" selected>1 Human + 2 AI</option>
+                        <option value="4">1 Human + 3 AI</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="single-hero-selection" class="hero-grid">
+                <h3>Choose Your Hero</h3>
+                <div class="heroes-container" id="single-heroes-container">
+                    <!-- Heroes will be populated with level info -->
+                </div>
+            </div>
+            
+            <div class="setup-buttons">
+                <button id="start-single-dungeon" class="btn btn-primary disabled">🚪 Enter Solo Dungeon</button>
+                <button id="back-to-welcome-single" class="btn btn-secondary">← Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div id="level-up-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎆 LEVEL UP!</h2>
+            <div id="level-up-info"></div>
+            
+            <div class="skill-selection" id="skill-selection">
+                <h3>Choose a Skill:</h3>
+                <div class="skills-grid" id="skills-grid">
+                    <!-- Skills will be populated -->
+                </div>
+            </div>
+            
+            <div class="attribute-allocation" id="attribute-allocation">
+                <h3>Allocate Attribute Points:</h3>
+                <div class="attributes-grid">
+                    <div class="attribute-row">
+                        <label>Attack (+1 damage)</label>
+                        <button class="attr-btn" data-attr="atk">+1 ATK</button>
+                    </div>
+                    <div class="attribute-row">
+                        <label>Defense (+1 damage reduction)</label>
+                        <button class="attr-btn" data-attr="def">+1 DEF</button>
+                    </div>
+                    <div class="attribute-row">
+                        <label>Health (+2 max HP)</label>
+                        <button class="attr-btn" data-attr="hp">+2 HP</button>
+                    </div>
+                    <div class="attribute-row">
+                        <label>Mana (+1 max MP)</label>
+                        <button class="attr-btn" data-attr="mp">+1 MP</button>
+                    </div>
+                </div>
+                <div class="points-remaining" id="points-remaining">Points: 0</div>
+            </div>
+            
+            <div class="level-up-buttons">
+                <button id="confirm-level-up" class="btn btn-primary">Confirm Upgrades</button>
+                <button id="skip-level-up" class="btn btn-secondary">Skip for Now</button>
             </div>
         </div>
     </div>
@@ -38,14 +159,37 @@
             <h2>📜 How to Play</h2>
             <div class="rules">
                 <h3>🎯 Objective</h3>
-                <p>Navigate through 4 dungeon rooms, defeat the Dragon boss, and collect the most treasure!</p>
+                <p>Navigate through 5 dungeon rooms, defeat the Ancient Dragon, and collect treasure! Level up your heroes to unlock powerful abilities.</p>
                 
-                <h3>⚔️ Heroes</h3>
+                <h3>⚔️ Heroes & Progression</h3>
                 <ul>
-                    <li><strong>🛡️ Knight:</strong> +2 Defense, can protect others</li>
-                    <li><strong>🧙 Wizard:</strong> +3 Spell damage, area effects</li>
-                    <li><strong>🗡️ Rogue:</strong> +1 Treasure, bypass traps</li>
-                    <li><strong>⛪ Cleric:</strong> +2 Healing, revive allies</li>
+                    <li><strong>🛡️ Knight (Lv.1-5):</strong> Tank with protection abilities. Unlocks Paladin at Lv.3</li>
+                    <li><strong>🧙 Wizard (Lv.1-5):</strong> Spell damage and combos. Unlocks Necromancer at Lv.3</li>
+                    <li><strong>🗡️ Rogue (Lv.1-5):</strong> Stealth and treasure bonuses. Unlocks Assassin at Lv.3</li>
+                    <li><strong>⛪ Cleric (Lv.1-5):</strong> Healing and support magic. Unlocks Druid at Lv.3</li>
+                </ul>
+                
+                <h3>🎲 Game Modes</h3>
+                <ul>
+                    <li><strong>Multiplayer:</strong> 2-4 human players, pass-and-play</li>
+                    <li><strong>Single Player Coop:</strong> You + AI allies vs dungeon</li>
+                    <li><strong>Single Player vs AI:</strong> Competitive treasure hunt</li>
+                </ul>
+                
+                <h3>✨ Magic System</h3>
+                <ul>
+                    <li><strong>Mana:</strong> Each spell costs mana, regenerates each turn</li>
+                    <li><strong>Spell Schools:</strong> Fire, Ice, Nature, Shadow, Light</li>
+                    <li><strong>Combos:</strong> Cast 2+ spells of same school for bonus effects</li>
+                    <li><strong>Equipment:</strong> Persistent items that enhance abilities</li>
+                </ul>
+                
+                <h3>📚 Level System</h3>
+                <ul>
+                    <li><strong>XP Sources:</strong> Combat (10), Room clear (15), Dragon (50), Treasure (5), Combos (8)</li>
+                    <li><strong>Rewards:</strong> +1 Attribute Point and +1 Skill Point per level</li>
+                    <li><strong>Skill Trees:</strong> 3 paths per hero (Combat/Magic/Support branches)</li>
+                    <li><strong>Unlocks:</strong> New heroes, dungeons, and legendary equipment</li>
                 </ul>
                 
                 <h3>🏰 Rooms</h3>
@@ -54,12 +198,13 @@
                     <li><strong>Goblin Warren:</strong> Fight Goblin (2HP/1ATK), +1 treasure</li>
                     <li><strong>Trap Chamber:</strong> Discard 2 cards or take damage, +2 treasure</li>
                     <li><strong>Treasure Vault:</strong> Fight Orc (4HP/2ATK), +3 treasure</li>
-                    <li><strong>Dragon's Lair:</strong> Boss fight! Dragon (10HP/3ATK)</li>
+                    <li><strong>Dragon's Lair:</strong> Ancient Dragon (10HP/3ATK) with Fire Breath pattern</li>
                 </ol>
                 
                 <h3>🏆 Victory</h3>
                 <p><strong>Cooperative:</strong> All survive and defeat Dragon<br>
-                <strong>Competitive:</strong> Most treasure when Dragon falls</p>
+                <strong>Competitive:</strong> Most treasure when Dragon falls<br>
+                <strong>Progression:</strong> Heroes keep XP and levels between games</p>
             </div>
             <button id="back-to-menu" class="btn btn-secondary">← Back to Menu</button>
         </div>
@@ -68,7 +213,7 @@
     <!-- Player Setup Screen -->
     <div id="setup-screen" class="screen">
         <div class="container">
-            <h2>🎲 Player Setup</h2>
+            <h2>🎲 Multiplayer Setup</h2>
             <div class="setup-controls">
                 <div class="player-count">
                     <label>Number of Players:</label>
@@ -95,21 +240,25 @@
                         <div class="hero-icon">🛡️</div>
                         <h4>Knight</h4>
                         <p>Defense: 8 HP<br>+2 Defense<br>Protect Others</p>
+                        <div class="hero-level">Lv. <span class="level-display">1</span></div>
                     </div>
                     <div class="hero-card" data-hero="wizard">
                         <div class="hero-icon">🧙</div>
                         <h4>Wizard</h4>
                         <p>Magic: 5 HP<br>+3 Spell DMG<br>Area Effects</p>
+                        <div class="hero-level">Lv. <span class="level-display">1</span></div>
                     </div>
                     <div class="hero-card" data-hero="rogue">
                         <div class="hero-icon">🗡️</div>
                         <h4>Rogue</h4>
                         <p>Stealth: 6 HP<br>+1 Treasure<br>Bypass Traps</p>
+                        <div class="hero-level">Lv. <span class="level-display">1</span></div>
                     </div>
                     <div class="hero-card" data-hero="cleric">
                         <div class="hero-icon">⛪</div>
                         <h4>Cleric</h4>
                         <p>Healing: 7 HP<br>+2 Heal Power<br>Revive Allies</p>
+                        <div class="hero-level">Lv. <span class="level-display">1</span></div>
                     </div>
                 </div>
             </div>
@@ -129,7 +278,7 @@
             <div class="game-header">
                 <div class="dungeon-progress">
                     <div id="room-indicator" class="room-indicator">
-                        <span class="room-name">Entrance Hall</span>
+                        <span class="room-name" id="room-name">Entrance Hall</span>
                         <div class="progress-dots">
                             <span class="dot active"></span>
                             <span class="dot"></span>
@@ -146,6 +295,7 @@
                     </div>
                     <div class="game-stats">
                         <span id="round-counter">Room 1/5</span>
+                        <span id="turn-counter">Turn 1</span>
                     </div>
                 </div>
             </div>
@@ -157,7 +307,7 @@
                 <div id="room-display" class="room-display">
                     <div class="room-card">
                         <div class="room-image">🚪</div>
-                        <h3 id="room-name">Entrance Hall</h3>
+                        <h3 id="room-name-display">Entrance Hall</h3>
                         <p id="room-description">A safe starting point. Draw an extra card to prepare for the dangers ahead.</p>
                         <div id="room-enemy" class="room-enemy hidden">
                             <div class="enemy-stats">
@@ -205,6 +355,21 @@
         </div>
     </div>
 
+    <!-- Post-Game XP Screen -->
+    <div id="xp-screen" class="screen">
+        <div class="container">
+            <h2>🎆 Adventure Complete!</h2>
+            <div id="xp-summary" class="xp-summary">
+                <!-- XP awards will be populated -->
+            </div>
+            
+            <div class="xp-buttons">
+                <button id="continue-to-level-up" class="btn btn-primary">✨ Level Up Heroes</button>
+                <button id="skip-to-menu" class="btn btn-secondary">Skip to Menu</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Victory Screen -->
     <div id="victory-screen" class="screen">
         <div class="container">
@@ -222,7 +387,7 @@
     <div id="loading-screen" class="screen">
         <div class="container">
             <div class="loading-spinner">⚔️</div>
-            <p>Preparing the dungeon...</p>
+            <p id="loading-text">Preparing the dungeon...</p>
         </div>
     </div>
 
@@ -237,7 +402,8 @@
         <source src="data:audio/wav;base64,UklGRmABAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YTwBAADM6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr6+vr" type="audio/wav">
     </audio>
 
-    <!-- Scripts -->
+    <!-- Scripts in correct order -->
+    <script src="js/progression.js"></script>
     <script src="js/heroes.js"></script>
     <script src="js/cards.js"></script>
     <script src="js/audio.js"></script>
