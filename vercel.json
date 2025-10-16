@@ -24,8 +24,7 @@
       "maxDuration": 30
     },
     "app/api/websocket.ts": {
-      "runtime": "edge",
-      "regions": ["iad1", "sfo1", "fra1", "hnd1"]
+      "runtime": "edge"
     },
     "app/api/cron/**/*.ts": {
       "runtime": "nodejs18.x",
