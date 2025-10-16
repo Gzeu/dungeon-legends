@@ -1,0 +1,13 @@
+/* Global reset + header/footer/nav */
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#0f0f0f;color:#eaeaea}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(15,15,15,0.8);backdrop-filter:saturate(180%) blur(6px);border-bottom:1px solid #222}
+.nav{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.nav .brand{color:#ffd579;text-decoration:none;font-weight:800}
+.nav .links{display:flex;gap:14px}
+.nav .links a{color:#ddd;text-decoration:none;padding:6px 10px;border-radius:8px}
+.nav .links a:hover{background:#1a1a1a}
+
+.site-footer{text-align:center;padding:24px 16px;border-top:1px solid #222;color:#777}
+
+/* Utilities */
+.hidden{display:none}
