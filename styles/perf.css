@@ -1,0 +1,11 @@
+/* Performance tweaks */
+/* Reduce WS toast flood */
+.result-toast { transition: opacity .25s ease } 
+
+/* Defer heavy shadows on mobile */
+@media (max-width: 640px) {
+  .teaser-card, .game-card { box-shadow: none !important }
+}
+
+/* LCP image sizing hints */
+.room-image img { width:100%; height:auto; aspect-ratio: 4/3; object-fit: cover }
