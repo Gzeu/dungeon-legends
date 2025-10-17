@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Legends - Dark Gothic RPG Card Game</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#FF4500">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dark-dungeon">
+    
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <h1 class="game-title">🏰 Dungeon Legends</h1>
+            <p class="subtitle">Dark Gothic RPG Adventure</p>
+            <div class="menu-buttons">
+                <button id="start-game" class="btn btn-primary">⚔️ Start Adventure</button>
+                <button id="single-player" class="btn btn-accent">🤖 Single Player</button>
+                <button id="how-to-play" class="btn btn-secondary">📜 How to Play</button>
+                <button id="view-profile" class="btn btn-secondary">📈 Hero Progress</button>
+                <button id="install-pwa" class="btn btn-accent hidden">📱 Install Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profile-screen" class="screen">
+        <div class="container">
+            <h2>📈 Hero Progress</h2>
+            <div class="profile-content">
+                <div class="player-stats-summary">
+                    <h3>Player Statistics</h3>
+                    <div class="stats-grid" id="player-stats-grid"></div>
+                </div>
+                <div class="heroes-progress">
+                    <h3>Hero Levels</h3>
+                    <div class="heroes-progress-grid" id="heroes-progress-grid"></div>
+                </div>
+                <div class="achievements-display">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid" id="achievements-grid"></div>
+                </div>
+            </div>
+            <button id="back-to-menu-profile" class="btn btn-secondary">← Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Single Player Setup Screen -->
+    <div id="single-player-screen" class="screen">
+        <div class="container">
+            <h2>🤖 Single Player Setup</h2>
+            <div class="setup-controls">
+                <div class="ai-settings">
+                    <label>AI Difficulty:</label>
+                    <select id="ai-difficulty-select">
+                        <option value="easy">Easy - Supportive AI</option>
+                        <option value="normal" selected>Normal - Balanced AI</option>
+                        <option value="hard">Hard - Tactical AI</option>
+                    </select>
+                </div>
+                <div class="game-mode">
+                    <label>Game Mode:</label>
+                    <select id="single-game-mode-select">
+                        <option value="cooperative">🤝 Cooperative (AI helps you)</option>
+                        <option value="competitive">⚔️ Competitive (AI vs You)</option>
+                    </select>
+                </div>
+                <div class="party-size">
+                    <label>Party Size:</label>
+                    <select id="single-party-size">
+                        <option value="2">1 Human + 1 AI</option>
+                        <option value="3" selected>1 Human + 2 AI</option>
+                        <option value="4">1 Human + 3 AI</option>
+                    </select>
+                </div>
+            </div>
+            <div id="single-hero-selection" class="hero-grid">
+                <h3>Choose Your Hero</h3>
+                <div class="heroes-container" id="single-heroes-container"></div>
+            </div>
+            <div class="setup-buttons">
+                <button id="start-single-dungeon" class="btn btn-primary disabled">🚪 Enter Solo Dungeon</button>
+                <button id="back-to-welcome-single" class="btn btn-secondary">← Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- How to Play Screen, Game Screen, etc. remain unchanged -->
+
+    <!-- Scripts in correct order (relative to /game/) -->
+    <script src="../js/progression.js"></script>
+    <script src="../js/heroes.js"></script>
+    <script src="../js/cards.js"></script>
+    <script src="../js/audio.js"></script>
+    <script src="../js/game-engine.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/pwa.js"></script>
+</body>
+</html>
