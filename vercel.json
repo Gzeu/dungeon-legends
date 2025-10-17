@@ -1,11 +1,4 @@
 {
-  "version": 2,
-  "name": "dungeon-legends",
-  "public": true,
-  "github": { "enabled": true },
-  "builds": [
-    { "src": "**/*", "use": "@vercel/static" }
-  ],
   "rewrites": [
     { "source": "/", "destination": "/landing.html" },
     { "source": "/game", "destination": "/index.html" },
