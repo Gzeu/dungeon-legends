@@ -1,43 +1,89 @@
 {
   "version": 2,
-  "name": "dungeon-legends-rpg",
+  "name": "dungeon-legends",
+  "alias": ["dungeon-legends"],
+  "public": true,
+  "github": {
+    "enabled": true,
+    "autoAlias": true
+  },
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
+      "src": "**/*",
+      "use": "@vercel/static"
     }
   ],
-  "env": {
-    "DATABASE_URL": "@database-url",
-    "NEXTAUTH_SECRET": "@nextauth-secret",
-    "NEXTAUTH_URL": "@nextauth-url",
-    "GOOGLE_CLIENT_ID": "@google-client-id",
-    "GOOGLE_CLIENT_SECRET": "@google-client-secret",
-    "DISCORD_CLIENT_ID": "@discord-client-id",
-    "DISCORD_CLIENT_SECRET": "@discord-client-secret",
-    "REDIS_URL": "@redis-url",
-    "WEBSOCKET_SECRET": "@websocket-secret"
-  },
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/landing.html"
+    },
+    {
+      "src": "/game",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/play",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/landing",
+      "dest": "/landing.html"
+    },
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/js/$1"
+    },
+    {
+      "src": "/manifest.webmanifest",
+      "dest": "/manifest.webmanifest"
+    },
+    {
+      "src": "/sw.js",
+      "dest": "/sw.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/landing.html"
+    }
+  ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/sw.js",
       "headers": [
         {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
+          "key": "Service-Worker-Allowed",
+          "value": "/"
         },
         {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css))",
       "headers": [
         {
           "key": "Cache-Control",
@@ -46,33 +92,19 @@
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|webp))",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate"
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
   ],
   "rewrites": [
     {
-      "source": "/ws",
-      "destination": "/api/websocket"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/daily-challenge",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/tournament",
-      "schedule": "0 */6 * * *"
-    },
-    {
-      "path": "/api/cron/leaderboard",
-      "schedule": "*/15 * * * *"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     }
   ]
 }
