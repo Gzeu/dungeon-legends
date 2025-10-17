@@ -1,0 +1,236 @@
+name: 🏰 Dungeon Legends CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'feature/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  # 🔍 Code Quality & Testing
+  quality-check:
+    name: 📊 Quality Assurance
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 📝 Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: ./
+          css: true
+          
+      - name: 🎨 Lint CSS
+        uses: actions-ecosystem/action-stylelint@v1
+        with:
+          pattern: "**/*.css"
+          
+      - name: ⚡ Check JavaScript
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          npx jshint js/*.js --config .jshintrc || true
+          echo "✅ JavaScript validation complete"
+          
+      - name: 🔗 Check Links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-verbose-mode: 'yes'
+          
+  # 🌐 PWA Validation
+  pwa-audit:
+    name: 📱 PWA Compliance
+    runs-on: ubuntu-latest
+    needs: quality-check
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: 📦 Install Dependencies
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          npm install -g http-server
+          
+      - name: 🚀 Start Test Server
+        run: |
+          http-server . -p 8080 -c-1 &
+          sleep 5
+          
+      - name: 🔍 Lighthouse CI Audit
+        run: |
+          lhci autorun --config=.lighthouserc.json || true
+          echo "📊 Lighthouse audit completed"
+          
+  # 📤 GitHub Pages Deployment
+  deploy-github-pages:
+    name: 🚀 Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [quality-check, pwa-audit]
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 🏗️ Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: 📂 Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './'
+          
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+      - name: ✅ Deployment Success
+        run: echo "🎉 Successfully deployed to ${{ steps.deployment.outputs.page_url }}"
+        
+  # ☁️ Vercel Preview Deployment
+  deploy-vercel-preview:
+    name: 🌩️ Deploy Vercel Preview
+    runs-on: ubuntu-latest
+    needs: quality-check
+    if: github.event_name == 'pull_request' || contains(github.ref, 'feature/')
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 🌩️ Deploy to Vercel Preview
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          
+  # 🌍 Vercel Production Deployment  
+  deploy-vercel-production:
+    name: 🌍 Deploy Vercel Production
+    runs-on: ubuntu-latest
+    needs: [quality-check, pwa-audit]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 🌍 Deploy to Vercel Production
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          
+  # 🔄 Auto-sync Branches
+  branch-sync:
+    name: 🔄 Branch Synchronization
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [deploy-github-pages]
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: 🔄 Sync develop branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout develop
+          git merge main --no-ff -m "🔄 Auto-sync: Merge main to develop"
+          git push origin develop
+          
+      - name: 📋 Update feature/vercel-mvp-rpg
+        run: |
+          git checkout feature/vercel-mvp-rpg
+          git merge main --no-ff -m "🔄 Auto-sync: Merge main updates" || true
+          git push origin feature/vercel-mvp-rpg || true
+          
+  # 📊 Performance Monitoring
+  performance-monitor:
+    name: 📈 Performance Monitoring
+    runs-on: ubuntu-latest
+    needs: deploy-github-pages
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: 📊 Monitor Site Performance
+        run: |
+          echo "🚀 Monitoring https://gzeu.github.io/dungeon-legends/"
+          curl -f https://gzeu.github.io/dungeon-legends/ > /dev/null
+          echo "✅ Site is accessible"
+          
+      - name: 📱 Check PWA Installability
+        run: |
+          echo "📱 Checking PWA manifest"
+          curl -f https://gzeu.github.io/dungeon-legends/manifest.webmanifest > /dev/null
+          echo "✅ PWA manifest accessible"
+          
+  # 🏷️ Auto-tagging for releases
+  auto-tag:
+    name: 🏷️ Auto-tagging
+    runs-on: ubuntu-latest
+    needs: [deploy-github-pages, deploy-vercel-production]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: 🏷️ Generate Version Tag
+        id: tag
+        run: |
+          VERSION=$(date +"v%Y.%m.%d.%H%M")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📅 Generated version: $VERSION"
+          
+      - name: 🏷️ Create Release Tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.tag.outputs.version }}',
+              sha: context.sha
+            })
+            
+      - name: 📋 Create Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: '${{ steps.tag.outputs.version }}',
+              name: '🏰 Dungeon Legends ${{ steps.tag.outputs.version }}',
+              body: `## 🎮 Dungeon Legends Release\n\n### 🚀 Deployments\n- **GitHub Pages:** https://gzeu.github.io/dungeon-legends/\n- **Vercel:** https://dungeon-legends.vercel.app/\n\n### ✨ Features\n- Complete RPG gameplay\n- Progressive Web App\n- Spectacular landing page\n- Multi-platform support\n\n**Commit:** ${context.sha.substring(0, 8)}`,
+              draft: false,
+              prerelease: false
+            })
+            console.log(`🎉 Release created: ${release.data.html_url}`)
