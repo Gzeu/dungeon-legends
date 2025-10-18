@@ -1,18 +1,4 @@
 {
-  "version": 2,
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    },
-    "app/api/websocket.ts": {
-      "runtime": "edge"
-    },
-    "app/api/cron/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 300
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -76,19 +62,5 @@
     { "source": "/", "destination": "/landing.html" },
     { "source": "/game", "destination": "/index.html" },
     { "source": "/play", "destination": "/index.html" }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/daily-challenge",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/tournament",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/cron/leaderboard",
-      "schedule": "0 6 * * *"
-    }
   ]
 }
