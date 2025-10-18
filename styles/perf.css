@@ -1,11 +1,17 @@
-/* Performance tweaks */
-/* Reduce WS toast flood */
-.result-toast { transition: opacity .25s ease } 
+/* Critical CSS: above-the-fold optimizations for landing */
+.hero { min-height: 68vh; display:grid; place-items:center; padding: 24px 16px }
+.hero h1 { font-size: clamp(2rem, 5vw, 3rem); line-height:1.1; margin: 0 0 8px }
+.hero p { font-size: clamp(1rem, 2.2vw, 1.125rem); color:#cfcfcf; margin: 0 0 16px }
+.cta { display:flex; gap:10px }
+.cta .btn-primary, .cta .btn-secondary { padding: 10px 14px; border-radius: 10px }
 
-/* Defer heavy shadows on mobile */
-@media (max-width: 640px) {
-  .teaser-card, .game-card { box-shadow: none !important }
-}
+/* Prevent layout shifts for teaser images */
+.teaser { display:grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap:12px; margin-top: 16px }
+.teaser .tile { position:relative; width:100%; aspect-ratio: 16/9; overflow:hidden; border-radius:12px; border:1px solid #2a2a2a; background:#111 }
 
-/* LCP image sizing hints */
-.room-image img { width:100%; height:auto; aspect-ratio: 4/3; object-fit: cover }
+/* Reserve space for room/enemy images */
+.room-image { width:100%; aspect-ratio: 16/9; border-radius: 12px; overflow:hidden }
+.enemy-card img { width:86px; height:86px; object-fit:cover }
+
+/* Hide non-critical glows on mobile to improve paint */
+@media (max-width: 640px) { .glow, .particle-bg { display:none } }

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Legends - Epic Medieval RPG Adventure</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Epic medieval fantasy RPG with card-based combat, hero progression, and cooperative dungeon crawling. Play solo or with friends in this dark gothic adventure.">
+    <meta name="keywords" content="RPG, medieval, fantasy, card game, dungeon crawler, progressive web app, multiplayer">
+    <meta name="author" content="Gzeu Games">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gzeu.github.io/dungeon-legends/">
+    <meta property="og:title" content="Dungeon Legends - Epic Medieval RPG">
+    <meta property="og:description" content="Navigate through 5 dungeon rooms, defeat the Ancient Dragon, and collect treasure! Level up your heroes to unlock powerful abilities.">
+    <meta property="og:image" content="https://gzeu.github.io/dungeon-legends/public/images/teaser-dungeon.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gzeu.github.io/dungeon-legends/">
+    <meta property="twitter:title" content="Dungeon Legends - Epic Medieval RPG">
+    <meta property="twitter:description" content="Navigate through 5 dungeon rooms, defeat the Ancient Dragon, and collect treasure!">
+    <meta property="twitter:image" content="https://gzeu.github.io/dungeon-legends/public/images/teaser-dungeon.png">
+    
+    <!-- PWA Links -->
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#FF4500">
+    <link rel="apple-touch-icon" href="/public/icons/icon-192x192.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #8B4513;
+            --color-secondary: #696969;
+            --color-accent: #FF4500;
+            --color-bg: #2F2F2F;
+            --color-card: #404040;
+            --color-text: #D3D3D3;
+            --color-gold: #FFD700;
+            --color-danger: #8B0000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        body.dark-dungeon {
+            background: #2F2F2F;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #2F2F2F 0%, #1a1a1a 100%);
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('public/images/teaser-dungeon.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.9), 0 0 20px rgba(255, 69, 0, 0.5);
+            font-weight: 900;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--color-gold);
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-weight: 600;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        
+        .btn {
+            background: var(--color-primary);
+            color: var(--color-text);
+            border: 2px solid var(--color-accent);
+            padding: 1.2rem 2.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+        
+        .btn:hover {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.6), 0 0 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .btn-primary {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            font-size: 1.3rem;
+            padding: 1.5rem 3rem;
+        }
+        
+        .btn-secondary {
+            background: var(--color-secondary);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: rgba(64, 64, 64, 0.8);
+        }
+        
+        .section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--color-accent);
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .feature-card {
+            background: rgba(64, 64, 64, 0.9);
+            border: 2px solid var(--color-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        
+        .feature-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        /* Heroes Section */
+        .heroes {
+            padding: 5rem 0;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('public/images/teaser-guild.png');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .heroes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .hero-card {
+            background: rgba(64, 64, 64, 0.9);
+            border: 3px solid var(--color-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .hero-portrait {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--color-accent);
+            margin: 0 auto 1rem;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .knight-portrait { background-image: url('public/images/heroes/knight-portrait.jpg'); }
+        .wizard-portrait { background-image: url('public/images/heroes/wizard-portrait.jpg'); }
+        .rogue-portrait { background-image: url('public/images/heroes/rogue-portrait.jpg'); }
+        .cleric-portrait { background-image: url('public/images/heroes/cleric-portrait.jpg'); }
+        
+        .hero-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .stat {
+            background: rgba(255, 69, 0, 0.2);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            border: 1px solid var(--color-accent);
+        }
+        
+        /* Screenshots */
+        .screenshots {
+            padding: 5rem 0;
+            background: var(--color-bg);
+        }
+        
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .screenshot {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            transition: transform 0.3s ease;
+        }
+        
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Stats */
+        .stats {
+            padding: 4rem 0;
+            background: rgba(64, 64, 64, 0.8);
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            padding: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            color: var(--color-accent);
+            font-weight: 900;
+            font-family: 'Cinzel Decorative', serif;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            margin-top: 0.5rem;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 3rem 0;
+            background: #1a1a1a;
+            text-align: center;
+            border-top: 2px solid var(--color-accent);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; }
+            .features-grid, .heroes-grid { grid-template-columns: 1fr; }
+            .hero-portrait { width: 80px; height: 80px; }
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hero-content h1 {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 69, 0, 0.6); }
+        }
+        
+        .hero-portrait {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="dark-dungeon">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🏰 Dungeon Legends</h1>
+                <p class="hero-subtitle">Epic Medieval RPG Adventure</p>
+                <p class="hero-description">
+                    Navigate through 5 treacherous dungeon rooms, defeat the mighty Ancient Dragon, and collect legendary treasure! 
+                    Level up your heroes to unlock powerful abilities in this dark gothic card-based RPG.
+                </p>
+                <div class="cta-buttons">
+                    <a href="/" class="btn btn-primary">🎮 PLAY NOW</a>
+                    <a href="https://github.com/Gzeu/dungeon-legends" class="btn btn-secondary">📂 View Source</a>
+                </div>
+                <div class="hero-features">
+                    <p>✅ <strong>Progressive Web App</strong> - Install & Play Offline</p>
+                    <p>✅ <strong>Cross-Platform</strong> - Desktop, Tablet & Mobile</p>
+                    <p>✅ <strong>No Download Required</strong> - Play Instantly in Browser</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Game Features -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">⚔️ Epic Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎲</div>
+                    <h3>Multiplayer Adventure</h3>
+                    <p>Play with 2-4 friends in pass-and-play mode or challenge intelligent AI opponents with 3 difficulty levels</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Hero Progression</h3>
+                    <p>Level up your heroes, unlock skill trees, collect legendary equipment, and build the ultimate adventuring party</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏰</div>
+                    <h3>5 Dungeon Rooms</h3>
+                    <p>From the Entrance Hall to the Dragon's Lair - each room brings unique challenges, enemies, and treasures</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧙</div>
+                    <h3>Magic System</h3>
+                    <p>Cast spells from 5 schools of magic, create powerful combos, and manage mana strategically in combat</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Cooperative & Competitive</h3>
+                    <p>Work together to survive the dungeon or compete for the most treasure - choose your adventure style</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>PWA Technology</h3>
+                    <p>Install like a native app, play completely offline, and enjoy seamless cross-device synchronization</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Heroes -->
+    <section class="heroes">
+        <div class="container">
+            <h2 class="section-title">🛡️ Choose Your Hero</h2>
+            <div class="heroes-grid">
+                <div class="hero-card">
+                    <div class="hero-portrait knight-portrait"></div>
+                    <h3>🛡️ Knight</h3>
+                    <p>Master of defense and protection. Guards allies with unwavering courage and heavy armor.</p>
+                    <div class="hero-stats">
+                        <span class="stat">8 HP</span>
+                        <span class="stat">+2 DEF</span>
+                        <span class="stat">Tank</span>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-portrait wizard-portrait"></div>
+                    <h3>🧙 Wizard</h3>
+                    <p>Arcane spellcaster with devastating magic. Unleashes elemental fury upon enemies.</p>
+                    <div class="hero-stats">
+                        <span class="stat">5 HP</span>
+                        <span class="stat">+3 MAGIC</span>
+                        <span class="stat">AoE</span>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-portrait rogue-portrait"></div>
+                    <h3>🗡️ Rogue</h3>
+                    <p>Stealthy treasure hunter with cunning tricks. Bypasses traps and strikes from shadows.</p>
+                    <div class="hero-stats">
+                        <span class="stat">6 HP</span>
+                        <span class="stat">+1 GOLD</span>
+                        <span class="stat">Stealth</span>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-portrait cleric-portrait"></div>
+                    <h3>⛪ Cleric</h3>
+                    <p>Divine healer and support specialist. Keeps the party alive with holy magic.</p>
+                    <div class="hero-stats">
+                        <span class="stat">7 HP</span>
+                        <span class="stat">+2 HEAL</span>
+                        <span class="stat">Support</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Game Stats -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="section-title">🏆 Game Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Dungeon Rooms</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Hero Classes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Unique Cards</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Replayability</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="hero" style="min-height: 60vh;">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="section-title">Ready for Adventure?</h2>
+                <p class="hero-description">
+                    Join thousands of players in the ultimate medieval RPG experience. 
+                    Your destiny awaits in the depths of the dungeon!
+                </p>
+                <div class="cta-buttons">
+                    <a href="/" class="btn btn-primary">🚀 START PLAYING</a>
+                    <a href="/" class="btn btn-secondary">📱 Install PWA</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="/">🎮 Play Game</a>
+                <a href="https://github.com/Gzeu/dungeon-legends">📂 GitHub</a>
+                <a href="https://github.com/Gzeu/dungeon-legends/issues">🐛 Report Bug</a>
+                <a href="https://github.com/Gzeu">👨‍💻 Developer</a>
+            </div>
+            <p>&copy; 2025 Dungeon Legends. Made with ⚔️ by Gzeu Games</p>
+            <p>Open Source • Progressive Web App • Made with AI</p>
+        </div>
+    </footer>
+    
+    <script>
+        // PWA Install prompt
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.querySelector('.btn[href="/"]:last-child');
+            if (installBtn) {
+                installBtn.addEventListener('click', async (e) => {
+                    if (installBtn.textContent.includes('Install')) {
+                        e.preventDefault();
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`User response to install prompt: ${outcome}`);
+                        deferredPrompt = null;
+                    }
+                });
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

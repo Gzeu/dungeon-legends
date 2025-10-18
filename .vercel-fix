@@ -1,0 +1,5 @@
+# Fix: Force clean Vercel deployment
+
+Timestamp: October 16, 2025 - 22:36 EEST
+
+This commit forces Vercel to redeploy with Next.js framework instead of serving cached static files.

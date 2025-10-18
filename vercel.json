@@ -58,13 +58,34 @@
           "value": "no-store, no-cache, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
     }
   ],
   "rewrites": [
-    {
-      "source": "/ws",
-      "destination": "/api/websocket"
-    }
+    { "source": "/", "destination": "/landing.html" },
+    { "source": "/game", "destination": "/index.html" },
+    { "source": "/play", "destination": "/index.html" }
   ],
   "crons": [
     {
