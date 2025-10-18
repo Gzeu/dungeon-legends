@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react'
-import HeroSelector from './components/HeroSelector'
+import HeroSelector from '../components/HeroSelector'
 
 export default function LobbyPageEnhanced() {
   const [selected, setSelected] = useState<string | null>(null)

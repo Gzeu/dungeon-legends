@@ -14,20 +14,38 @@ export function useSecureWS(path: string) {
       const base = process.env.NODE_ENV === 'production' ? `wss://${window.location.host}` : 'ws://localhost:3001'
       const ws = new WebSocket(`${base}${path}`)
       wsRef.current = ws
-      ws.onopen = async () => {
-        const res = await fetch('/api/auth/ws-token')
-        const { token } = await res.json()
-        ws.send(JSON.stringify({ type: 'authenticate', token }))
+
+      ws.onopen = () => {
+        console.log('🔗 WebSocket connected successfully')
+        // Simple authentication for development
+        ws.send(JSON.stringify({
+          type: 'authenticate',
+          userId: session.user.id
+        }))
+        if (active) setReady(true)
       }
+
       ws.onmessage = (e) => {
         if (!active) return
-        const data = JSON.parse(e.data)
-        if (data.type === 'authenticated') setReady(true)
+        console.log('📨 WebSocket message:', e.data)
       }
-      ws.onclose = () => { setReady(false) }
+
+      ws.onerror = (error) => {
+        console.error('❌ WebSocket error:', error)
+      }
+
+      ws.onclose = () => {
+        console.log('🔌 WebSocket disconnected')
+        if (active) setReady(false)
+      }
+
+      return () => {
+        active = false
+        ws.close()
+      }
     }
+
     connect()
-    return () => { active = false; wsRef.current?.close() }
   }, [session?.user?.id, path])
 
   const send = (payload: any) => {

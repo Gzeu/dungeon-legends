@@ -44,6 +44,9 @@ model User {
   friends         Friendship[] @relation("UserFriends")
   friendOf        Friendship[] @relation("FriendOfUser")
   createdContent  UserContent[]
+  raidParticipants     GuildRaidParticipant[]
+  tournamentParticipants TournamentParticipant[]
+  spectatedGames       GameSpectator[]
   
   // Authentication (NextAuth)
   accounts        Account[]

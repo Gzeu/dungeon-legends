@@ -1,0 +1,7 @@
+/* Action Bar with icons + cooldown ring */
+.action-bar { display:flex; gap:10px; align-items:center }
+.action-btn { position:relative; width:44px; height:44px; border-radius:10px; background:#1a1a1a; border:1px solid #333; display:flex; align-items:center; justify-content:center; color:#ddd }
+.action-btn svg { width:22px; height:22px }
+.cooldown { position:absolute; inset:0; border-radius:10px; border: 2px solid rgba(255,255,255,0.1); mask: radial-gradient(transparent 14px, black 15px); }
+.cooldown[data-active="true"] { animation: cd 4s linear forwards }
+@keyframes cd { from { clip-path: inset(0 0 0 0) } to { clip-path: inset(0 100% 0 0) } }

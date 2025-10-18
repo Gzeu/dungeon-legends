@@ -1,0 +1,1 @@
+{"scripts": {"assets:extended:enemies":"node scripts/fetch-extended.mjs enemies_extended","assets:extended:ice":"node scripts/fetch-extended.mjs rooms_ice_caverns"}}
