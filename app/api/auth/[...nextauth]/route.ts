@@ -1,11 +1,8 @@
-import NextAuth from "next-auth"
+import NextAuth, { type NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { prisma } from "@/lib/db"
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -16,10 +13,14 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET || ""
     })
   ],
-  session: { strategy: 'jwt' },
-  pages: { signIn: '/auth/signin' },
+  session: {
+    strategy: "jwt" as const
+  },
+  pages: {
+    signIn: '/auth/signin'
+  },
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (session.user) {
         session.user.id = token.sub as string
       }

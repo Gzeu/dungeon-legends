@@ -1,4 +1,4 @@
-import '../styles/game-polish.css'
+import '../../../styles/game-polish.css'
 import { useEffect, useRef, useState } from 'react'
 import { CombatVFX } from '@/app/components/CombatVFX'
 

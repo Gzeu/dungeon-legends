@@ -1,4 +1,4 @@
-import '../styles/polish.css'
+import '../../styles/polish.css'
 import { VFXOverlay } from '../components/VFXOverlay'
 import { MiniCard } from '../components/MiniCard'
 

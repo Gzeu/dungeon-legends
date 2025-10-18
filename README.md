@@ -40,7 +40,7 @@ A complete medieval fantasy RPG built with Next.js 14, featuring card-based comb
 2. **Setup Environment**
    ```bash
    cp .env.example .env.local
-   # Edit .env.local cu API keys
+   # Edit .env.local cu MongoDB și OAuth keys
    ```
 
 3. **Install și Assets**
@@ -56,12 +56,17 @@ A complete medieval fantasy RPG built with Next.js 14, featuring card-based comb
 
 ### Local Development
 ```bash
-# Database setup
-npm run db:push
-npm run db:seed
+# Install dependencies
+npm install
 
-# Start development
-npm run dev
+# Setup MongoDB Atlas (cloud database)
+# 1. Create account la https://mongodb.com/atlas
+# 2. Create cluster și obține connection string
+# 3. Adaugă MONGODB_URI în .env.local
+
+# Start servers
+npm run ws:server  # Terminal 1: WebSocket server
+npm run dev        # Terminal 2: Next.js dev server
 
 # Open http://localhost:3000
 ```
@@ -78,6 +83,8 @@ dungeon-legends/
 │   └── components/         # Reusable components
 │
 ├── lib/                   # Core libraries
+│   ├── db.ts               # MongoDB connection cu Mongoose
+│   ├── models/             # MongoDB schemas (User, etc.)
 │   ├── game-engine.js      # Server-side game logic
 │   ├── audio-manager.js    # Procedural sound system
 │   └── ws-auth.ts          # WebSocket authentication
@@ -87,10 +94,6 @@ dungeon-legends/
 │   ├── heroes.json         # Hero classes + skills
 │   └── rooms.json          # Dungeon layouts
 │
-├── prisma/                # Database schema
-│   ├── schema.prisma       # Full RPG data model
-│   └── seed.ts            # Initial data
-│
 ├── public/                # Static assets
 │   ├── images/heroes/      # Hero portraits (4)
 │   ├── images/enemies/     # Enemy sprites (3)
@@ -98,6 +101,7 @@ dungeon-legends/
 │   ├── icons/              # PWA icons
 │   └── screenshots/        # App store screenshots
 │
+├── server.js              # WebSocket server pentru multiplayer
 └── scripts/               # Asset management
     ├── fetch-all-assets.mjs
     └── resize-icons-improved.mjs
@@ -107,8 +111,8 @@ dungeon-legends/
 
 - **Bundle Size**: <500KB total
 - **First Load**: <1.5s pe 3G
-- **Database**: Optimized queries cu indexing
-- **WebSocket**: <50ms latency on Vercel Edge
+- **Database**: MongoDB Atlas cu connection pooling
+- **WebSocket**: <50ms latency cu server dedicat
 - **PWA Score**: 95+ on Lighthouse
 
 ## 🔧 Tech Stack
@@ -122,10 +126,10 @@ dungeon-legends/
 
 ### Backend
 - **API**: Next.js API Routes
-- **Database**: PostgreSQL cu Prisma ORM
+- **Database**: MongoDB Atlas cu Mongoose ODM
 - **Auth**: NextAuth.js (Google + GitHub)
-- **Real-time**: WebSocket cu JWT authentication
-- **Storage**: Vercel Postgres + Edge Runtime
+- **Real-time**: Custom WebSocket server
+- **Storage**: Vercel Blob pentru assets
 
 ### Deployment
 - **Platform**: Vercel cu Edge Functions
@@ -136,12 +140,12 @@ dungeon-legends/
 ## 📝 Environment Variables
 
 ```bash
-# Database
-DATABASE_URL="postgresql://user:pass@host:port/db"
+# MongoDB Atlas
+MONGODB_URI="mongodb+srv://user:pass@cluster.mongodb.net/db"
 
 # NextAuth
 NEXTAUTH_SECRET="your-secret-key-min-32-chars"
-NEXTAUTH_URL="https://your-domain.vercel.app"
+NEXTAUTH_URL="http://localhost:3000"
 
 # OAuth Providers
 GOOGLE_CLIENT_ID="your-google-oauth-client-id"
@@ -164,7 +168,7 @@ WEBSOCKET_SECRET="your-jwt-secret-for-websocket"
 ## 🎆 Roadmap
 
 ### Phase 1: Core (Complete ✅)
-- [x] Full-stack architecture
+- [x] Full-stack architecture cu MongoDB
 - [x] Authentication și security
 - [x] Game engine și WebSocket
 - [x] PWA cu complete assets

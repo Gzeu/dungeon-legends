@@ -1,21 +1,13 @@
 {
   "version": 2,
-  "name": "dungeon-legends-rpg",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
-    "DATABASE_URL": "@database-url",
+    "MONGODB_URI": "@mongodb-uri",
     "NEXTAUTH_SECRET": "@nextauth-secret",
     "NEXTAUTH_URL": "@nextauth-url",
     "GOOGLE_CLIENT_ID": "@google-client-id",
     "GOOGLE_CLIENT_SECRET": "@google-client-secret",
-    "DISCORD_CLIENT_ID": "@discord-client-id",
-    "DISCORD_CLIENT_SECRET": "@discord-client-secret",
-    "REDIS_URL": "@redis-url",
+    "GITHUB_ID": "@github-id",
+    "GITHUB_SECRET": "@github-secret",
     "WEBSOCKET_SECRET": "@websocket-secret"
   },
   "functions": {
@@ -81,11 +73,11 @@
     },
     {
       "path": "/api/cron/tournament",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 12 * * *"
     },
     {
       "path": "/api/cron/leaderboard",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 6 * * *"
     }
   ]
 }

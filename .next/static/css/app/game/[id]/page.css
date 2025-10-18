@@ -1,0 +1,18 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/game-polish.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+/* Game polish effects, result toasts, combo streak */
+.result-toast { position: fixed; right: 16px; top: 16px; padding: 10px 14px; border-radius: 10px; background:#151515; border:1px solid #333; color:#eee; box-shadow: 0 8px 24px rgba(0,0,0,0.35); z-index: 1000 }
+.result-toast.crit { border-color: #ff784f; box-shadow: 0 8px 28px rgba(255,120,79,0.25) }
+.result-toast.combo { border-color: #ffd579; box-shadow: 0 8px 28px rgba(255,213,121,0.25) }
+
+.combo-streak { position: fixed; left: 50%; transform: translateX(-50%); top: 14px; color:#ffd579; background: rgba(255,213,121,0.08); border:1px solid rgba(255,213,121,0.25); padding: 6px 12px; border-radius: 999px; box-shadow: 0 0 22px rgba(255,213,121,0.12); font-weight:800 }
+
+.enemy-shake { animation: enemy-shake 0.4s ease; }
+@keyframes enemy-shake { 0% { transform: translateX(0) } 25% { transform: translateX(-6px) } 50% { transform: translateX(6px) } 75% { transform: translateX(-3px) } 100%{ transform: translateX(0) } }
+
+.enemy-glow { box-shadow: 0 0 22px rgba(255,120,79,0.25); }
+
+/* Spell VFX layers */
+.combat-vfx { position: absolute; inset: 0; pointer-events: none; }
+
