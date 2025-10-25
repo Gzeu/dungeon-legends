@@ -1,6 +1,7 @@
 import './globals.css'
 import '../styles/advanced-ui.css'
 import '../styles/chat-spectator.css'
+import '../styles/game-ui.css'
 import { Cinzel } from 'next/font/google'
 import Link from 'next/link'
 import { Suspense } from 'react'
