@@ -13,8 +13,8 @@ export default function Home() {
           A dark gothic RPG with card-based combat, progression, and real-time adventures.
         </motion.p>
         <motion.div className="cta" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}>
-          <Link href="/lobby" className="btn-primary">Play Now</Link>
-          <Link href="/how-to" className="btn-secondary">How to Play</Link>
+          <Link href="/lobby" className="btn btn-primary">Play Now</Link>
+          <Link href="/how-to" className="btn btn-secondary">How to Play</Link>
         </motion.div>
       </section>
 
@@ -30,13 +30,13 @@ export default function Home() {
           <div className="teaser-bg" />
           <h3>Enter the Dragon's Lair</h3>
           <p>Can your party survive the fire?</p>
-          <Link href="/lobby" className="btn-accent">Start Adventure</Link>
+          <Link href="/lobby" className="btn btn-accent">Start Adventure</Link>
         </motion.div>
         <motion.div className="teaser-card" whileHover={{ scale: 1.03 }}>
           <div className="teaser-bg alt" />
           <h3>Create Your Guild</h3>
           <p>Gather allies for raids and tournaments.</p>
-          <Link href="/profile" className="btn-accent">Build Legacy</Link>
+          <Link href="/profile" className="btn btn-accent">Build Legacy</Link>
         </motion.div>
       </section>
     </main>
