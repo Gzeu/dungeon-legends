@@ -1,174 +1,150 @@
-# 🏰 Dungeon Legends - Epic Medieval RPG
+# 🏰 Dungeon Legends
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-orange?style=for-the-badge&logo=gamepad)](https://gzeu.github.io/dungeon-legends/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-green?style=for-the-badge&logo=github)](https://gzeu.github.io/dungeon-legends/)
-[![Vercel](https://img.shields.io/badge/Vercel-Ready-black?style=for-the-badge&logo=vercel)](https://dungeon-legends.vercel.app/)
-[![PWA](https://img.shields.io/badge/PWA-Ready-purple?style=for-the-badge&logo=pwa)](https://web.dev/progressive-web-apps/)
+> Epic Medieval RPG with card-based combat, hero progression, and cooperative gameplay
 
-> **Epic medieval fantasy RPG with card-based combat, hero progression, and cooperative dungeon crawling. Play solo or with friends in this dark gothic adventure.**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGzeu%2Fdungeon-legends)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 
-![Dungeon Legends Screenshot](public/images/teaser-dungeon.png)
+## 🎮 Play Now
 
-## 🎮 **Play Now**
+**Live Demo:** [https://dungeon-legends.vercel.app](https://dungeon-legends.vercel.app)
 
-### 🌐 **Live Deployments**
-- **🏰 Landing Page:** [gzeu.github.io/dungeon-legends](https://gzeu.github.io/dungeon-legends/)
-- **⚔️ Game Direct:** [gzeu.github.io/dungeon-legends/index.html](https://gzeu.github.io/dungeon-legends/index.html)
-- **🚀 Vercel (Coming Soon):** [dungeon-legends.vercel.app](https://dungeon-legends.vercel.app/)
+## ✨ Features
 
-### 📱 **Install as PWA**
-1. Visit the game on mobile/desktop
-2. Look for "Add to Home Screen" prompt
-3. Install and play offline like a native app!
+- 🗡️ **Turn-based Combat** - Strategic card-based battles
+- 🧙 **4 Hero Classes** - Knight, Wizard, Rogue, Cleric
+- 🏰 **5 Dungeon Rooms** - From Entrance to Dragon's Lair
+- 🔮 **Magic System** - 5 schools of magic with combo effects
+- 🤝 **Multiplayer** - Local co-op and competitive modes
+- 📱 **Progressive Web App** - Install and play offline
+- 🎨 **Dark Gothic Theme** - Immersive medieval atmosphere
 
-## ✨ **Epic Features**
+## 🚀 Quick Start
 
-### 🎯 **Core Gameplay**
-- **🏰 5 Dungeon Rooms:** From Entrance Hall to Dragon's Lair
-- **⚔️ 4 Hero Classes:** Knight, Wizard, Rogue, Cleric
-- **🃏 50+ Unique Cards:** Spells, weapons, and special abilities
-- **🐉 Epic Boss Battle:** Face the Ancient Dragon
-- **💰 Treasure System:** Competitive scoring and rewards
+### Play Online
 
-### 👥 **Multiplayer Modes**
-- **🤝 Cooperative:** Work together to survive
-- **⚔️ Competitive:** Race for the most treasure
-- **🤖 Single Player:** 3 AI difficulty levels
-- **🎮 Pass-and-Play:** 2-4 players on one device
+Just visit [the live demo](https://dungeon-legends.vercel.app) and start playing!
 
-### 📈 **Progression System**
-- **⭐ Hero Levels:** Persistent XP and progression
-- **🌟 Skill Trees:** Unlock powerful abilities
-- **⚔️ Equipment:** Legendary weapons and armor
-- **🏆 Achievements:** Track your accomplishments
-- **📊 Statistics:** Detailed player analytics
+### Local Development
 
-### 🎨 **Dark Gothic Theme**
-- **🎭 Cinzel Fonts:** Medieval typography
-- **🔥 Torch Animations:** Dynamic flame effects
-- **🏰 Stone Textures:** Atmospheric visuals
-- **🌙 Dark Palette:** Brown/gray/orange fire theme
-
-### 📱 **Progressive Web App**
-- **💾 Offline Play:** Full functionality without internet
-- **🏠 Home Screen Install:** Native app experience
-- **📱 Cross-Platform:** Desktop, tablet, mobile
-- **🔄 Auto-Sync:** Progress saved across devices
-- **⚡ Fast Loading:** Optimized performance
-
-## 🛠 **Technical Stack**
-
-- **Frontend:** Vanilla HTML5, CSS3, JavaScript ES6+
-- **Styling:** Custom CSS with CSS Variables
-- **PWA:** Service Worker, Web App Manifest
-- **Deployment:** GitHub Pages + Vercel
-- **Assets:** Optimized images, fonts, icons
-- **Architecture:** Modular ES6 modules
-
-## 🚀 **Getting Started**
-
-### 🎮 **Play Online**
 ```bash
-# Simply visit:
-https://gzeu.github.io/dungeon-legends/
-```
-
-### 💻 **Local Development**
-```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/Gzeu/dungeon-legends.git
 cd dungeon-legends
 
-# Serve locally (Python)
-python -m http.server 8000
-# OR (Node.js)
-npx serve .
-# OR (PHP)
-php -S localhost:8000
+# Install dependencies
+npm install
 
-# Open browser
-open http://localhost:8000
+# Set up database
+npm run db:push
+
+# Start development server
+npm run dev
 ```
 
-### 🌐 **Deploy to Vercel**
-```bash
-# Install Vercel CLI
-npm i -g vercel
+Open [http://localhost:3000](http://localhost:3000) to play.
 
-# Deploy
-vercel --prod
+## 📦 Tech Stack
 
-# Custom domain
-vercel --prod --alias dungeon-legends.your-domain.com
-```
+- **Framework:** Next.js 14 with App Router
+- **Language:** TypeScript
+- **Database:** PostgreSQL with Prisma ORM
+- **Styling:** CSS Modules + Tailwind CSS
+- **Animation:** Framer Motion
+- **Real-time:** WebSocket with Socket.io
+- **Deployment:** Vercel
 
-## 📂 **Project Structure**
+## 🏗️ Project Structure
 
 ```
 dungeon-legends/
-├── 📄 index.html          # Game application
-├── 🏰 landing.html        # Spectacular landing page
-├── 📱 manifest.webmanifest # PWA configuration
-├── ⚙️ sw.js              # Service Worker
-├── 🎨 css/
-│   └── styles.css         # Dark Gothic theme
-├── 🎮 js/
-│   ├── main.js           # Game initialization
-│   ├── game-engine.js    # Core game logic
-│   ├── heroes.js         # Hero system
-│   ├── cards.js          # Card mechanics
-│   ├── progression.js    # XP & leveling
-│   ├── ai-player.js      # AI intelligence
-│   └── audio.js          # Sound effects
-├── 🖼️ public/
-│   ├── icons/            # PWA icons (all sizes)
-│   ├── images/           # Game assets
-│   │   ├── heroes/       # Hero portraits
-│   │   ├── enemies/      # Monster images
-│   │   └── rooms/        # Dungeon backgrounds
-│   └── screenshots/      # PWA store images
-└── 📚 docs/              # Documentation
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Landing page
+│   ├── lobby/             # Game lobby
+│   ├── game/              # Game interface
+│   ├── api/               # API routes
+│   └── components/        # Shared components
+├── lib/                   # Server-side logic
+│   ├── game-engine.js     # Core game mechanics
+│   ├── data-loader.ts     # Game data management
+│   └── db.ts              # Database configuration
+├── data/                  # Game assets (heroes, spells, rooms)
+├── styles/                # CSS modules
+├── prisma/                # Database schema
+└── public/                # Static assets
 ```
 
-## 🎯 **Game Mechanics**
+## 🎯 How to Play
 
-### ⚔️ **Combat System**
-- Turn-based card play
-- Attack, Defend, Special abilities
-- Mana management for spells
-- Status effects and buffs
+1. **Choose Your Hero** - Select from 4 unique classes
+2. **Enter the Dungeon** - Navigate through 5 challenging rooms
+3. **Strategic Combat** - Play cards, cast spells, use abilities
+4. **Defeat the Dragon** - Face the Ancient Dragon in the final battle
+5. **Collect Treasure** - Gain XP and legendary equipment
 
-### 🏰 **Dungeon Rooms**
-1. **🚪 Entrance Hall:** Safe start, draw extra card
-2. **👹 Goblin Warren:** Fight Goblin (2HP/1ATK)
-3. **⚡ Trap Chamber:** Discard cards or take damage
-4. **💎 Treasure Vault:** Fight Orc (4HP/2ATK)
-5. **🐉 Dragon's Lair:** Ancient Dragon (10HP/3ATK)
+### Hero Classes
 
-### 🎭 **Hero Classes**
-- **🛡️ Knight:** Tank with protection abilities
-- **🧙 Wizard:** Spell damage and area effects
-- **🗡️ Rogue:** Stealth and treasure bonuses
-- **⛪ Cleric:** Healing and support magic
+| Hero | Health | Mana | Special Ability |
+|------|--------|------|----------------|
+| 🛡️ **Knight** | 8 | 3 | Shield Wall (Defense +2) |
+| 🧙 **Wizard** | 5 | 5 | Arcane Blast (4 damage) |
+| 🗡️ **Rogue** | 6 | 4 | Shadow Step (Stealth) |
+| ⛪ **Cleric** | 7 | 4 | Divine Intervention (Heal 4) |
 
-## 📱 **PWA Features**
+### Magic Schools
 
-- ✅ **8 Icon Sizes:** 72px to 512px complete set
-- ✅ **Offline Capable:** Full game works without internet
-- ✅ **Installable:** Add to home screen
-- ✅ **Responsive:** Mobile, tablet, desktop optimized
-- ✅ **Fast:** Instant loading with caching
-- ✅ **Secure:** HTTPS enforced
+- 🔥 **Fire** - Direct damage with burning effects
+- ❄️ **Ice** - Damage with slowing effects  
+- 🌿 **Nature** - Healing and regeneration
+- 🗡️ **Shadow** - Poison and stealth effects
+- ✨ **Light** - Party buffs and protection
 
-## 🏆 **Awards & Recognition**
+## 🛠️ Development
 
-- 🎮 **Fully Playable RPG** - Complete game mechanics
-- 📱 **Perfect PWA Score** - Lighthouse optimization
-- 🎨 **Professional UI/UX** - Dark Gothic theme
-- ⚡ **Performance Optimized** - Fast loading times
-- 🌐 **Cross-Platform** - Works everywhere
+### Available Scripts
 
-## 🤝 **Contributing**
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:push      # Push database schema
+npm run db:migrate   # Run database migrations
+npm run db:studio    # Open Prisma Studio
+```
+
+### Environment Variables
+
+Create a `.env.local` file:
+
+```env
+DATABASE_URL="postgresql://..."
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+## 🔧 API Reference
+
+### Game Management
+
+- `POST /api/game/create` - Create new game
+- `POST /api/game/join` - Join existing game  
+- `GET /api/game/state/:id` - Get game state
+
+### Real-time Communication
+
+- WebSocket endpoint at `/api/websocket`
+- Game actions, chat, and state synchronization
+
+## 📱 PWA Features
+
+- **Offline Support** - Play without internet
+- **Install Prompt** - Add to home screen
+- **Background Sync** - Sync when connection returns
+- **Push Notifications** - Game updates and reminders
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -176,25 +152,17 @@ dungeon-legends/
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 **License**
+## 📄 License
 
-MIT License - feel free to use this project for learning or commercial purposes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🎖️ **Credits**
+## 🙏 Acknowledgments
 
-- **Developer:** [Gzeu](https://github.com/Gzeu)
-- **Design:** Dark Gothic Medieval Theme
-- **Technology:** Modern Web Standards
-- **AI Assistance:** Advanced AI code generation
+- Built with ❤️ using modern web technologies
+- Inspired by classic dungeon crawler RPGs
+- Gothic theme and medieval fantasy aesthetics
+- Community feedback and contributions
 
 ---
 
-<div align="center">
-
-### 🏰 **Ready for Adventure?**
-
-[![Play Now](https://img.shields.io/badge/🎮%20PLAY%20NOW-Epic%20Adventure%20Awaits-orange?style=for-the-badge&logo=gamepad)](https://gzeu.github.io/dungeon-legends/)
-
-**Made with ⚔️ by Gzeu Games • Progressive Web App • Open Source**
-
-</div>
+**Ready for Adventure?** [🎮 Play Dungeon Legends Now!](https://dungeon-legends.vercel.app)
