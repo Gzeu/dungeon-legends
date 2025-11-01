@@ -1,4 +1,60 @@
-import { PrismaClient } from '@prisma/client'
-export const prisma = new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
-})
+import mongoose from 'mongoose'
+
+const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local')
+}
+
+interface MongooseCache {
+  conn: typeof mongoose | null
+  promise: Promise<typeof mongoose> | null
+}
+
+// Global cache to prevent multiple connections in development
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoose: MongooseCache | undefined
+}
+
+let cached: MongooseCache = global.mongoose || {
+  conn: null,
+  promise: null,
+}
+
+if (!global.mongoose) {
+  global.mongoose = cached
+}
+
+async function connectDB(): Promise<typeof mongoose> {
+  if (cached.conn) {
+    return cached.conn
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+      return mongoose
+    })
+  }
+
+  try {
+    cached.conn = await cached.promise
+  } catch (e) {
+    cached.promise = null
+    throw e
+  }
+
+  return cached.conn
+}
+
+export { connectDB }
+export const mongooseConnection = mongoose
+
+// Legacy Prisma support for backward compatibility
+export const db = {
+  // Add any Prisma client exports here if needed for transition
+}
